@@ -1,0 +1,135 @@
+# 操作系统生成的文件
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE相关文件
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# 编辑器备份文件
+*.orig
+*.bak
+*.backup
+
+# Python相关
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 测试相关
+.pytest_cache/
+.coverage
+coverage.xml
+nosetests.xml
+*.cover
+
+# 构建相关
+build/
+dist/
+*.egg-info/
+*.egg
+
+# 环境相关
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+venv/
+env/
+envs/
+
+# 日志相关
+logs/
+*.log
+
+# 数据库相关
+*.sqlite3
+*.db
+*.db-journal
+*.sqlite3-journal
+
+sqlite_data/
+
+# 文档相关
+docs/_build/
+
+# 前端相关（如果使用Node.js）
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules/
+.pnp
+.pnp.js
+
+# 缓存
+.eslintcache
+.parcel-cache
+.next
+out
+.nuxt
+.vuepress/dist
+.serverless/
+.fusebox/
+.dynamodb/
+.tern-port
+.vscode-test
+.yarn-integrity
+
+# 操作系统特定
+*.lnk
+*.tmp
+*.temp
+
+# Windows
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.AppleDouble
+.LSOverride
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# 其他
+.cache
+.temp
+.tmp
+*.pid
+*.seed
+*.pid.lock
+
+# 敏感信息
+config.py
+secret_key.py
+api_keys.py
+settings.py
