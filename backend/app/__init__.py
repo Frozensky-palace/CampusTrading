@@ -50,7 +50,7 @@ def create_app(config_name=None):
     
     # 商品模块
     from app.modules.item.routes import item_bp
-    app.register_blueprint(item_bp, url_prefix='/api/item')
+    app.register_blueprint(item_bp, url_prefix='/api/items')
     
     # 交易模块
     from app.modules.transaction.routes import transaction_bp
@@ -58,7 +58,7 @@ def create_app(config_name=None):
     
     # 求购模块
     from app.modules.request.routes import request_bp
-    app.register_blueprint(request_bp, url_prefix='/api/request')
+    app.register_blueprint(request_bp, url_prefix='/api/requests')
     
     # 比价模块
     from app.modules.compare.routes import compare_bp

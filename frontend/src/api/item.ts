@@ -138,7 +138,7 @@ export const itemAPI = {
 
   // 获取平台统计数据
   getPlatformStats: () => {
-    return request.get('/platform/stats');
+    return request.get('/items/platform/stats');
   },
 
   // 获取新品上架

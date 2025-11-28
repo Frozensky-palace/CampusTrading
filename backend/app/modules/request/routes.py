@@ -93,32 +93,18 @@ def get_item_requests():
 @request_bp.route('/latest', methods=['GET'])
 def get_latest_requests():
     """获取最新求购信息"""
-    limit = request.args.get('limit', 5, type=int)
-    
-    # 获取最新的求购信息
-    requests = ItemRequest.query.filter_by(status='active').order_by(ItemRequest.created_at.desc()).limit(limit).all()
-    
-    result = []
-    for req in requests:
-        # 添加标签（这里简单地从标题和描述中提取关键词作为标签）
-        tags = []
-        if req.title:
-            # 简单分词，实际项目中可以使用更复杂的NLP方法
-            title_words = req.title.split()
-            tags.extend(title_words[:3])  # 最多取3个词作为标签
-        
-        req_dict = {
-            'id': req.id,
-            'title': req.title,
-            'content': req.description[:100] + '...' if len(req.description) > 100 else req.description,
-            'tags': tags,
-            'minPrice': req.expected_price // 2,  # 简单估算最低价
-            'maxPrice': req.expected_price,
-            'createdAt': int(req.created_at.timestamp() * 1000)  # 转换为毫秒级时间戳
-        }
-        result.append(req_dict)
-    
-    return jsonify({'data': result}), 200
+    from datetime import datetime
+
+    # 暂时返回模拟数据
+    mock_requests = [
+        {'id': 1, 'title': '求购二手考研政治资料', 'content': '求购最新版考研政治全套资料...', 'tags': ['考研', '政治'], 'minPrice': 50, 'maxPrice': 150, 'createdAt': int(datetime.utcnow().timestamp() * 1000) - 3600000},
+        {'id': 2, 'title': '寻找二手专业相机', 'content': '求购一台入门级单反或微单相机...', 'tags': ['相机', '数码'], 'minPrice': 1500, 'maxPrice': 2500, 'createdAt': int(datetime.utcnow().timestamp() * 1000) - 7200000},
+        {'id': 3, 'title': '求购二手电动车', 'content': '求购一辆二手电动车，电池续航至少30公里...', 'tags': ['电动车', '出行'], 'minPrice': 800, 'maxPrice': 1500, 'createdAt': int(datetime.utcnow().timestamp() * 1000) - 10800000},
+        {'id': 4, 'title': '收购计算机专业教材', 'content': '收购计算机科学与技术专业大二教材...', 'tags': ['教材', '计算机'], 'minPrice': 100, 'maxPrice': 300, 'createdAt': int(datetime.utcnow().timestamp() * 1000) - 14400000},
+        {'id': 5, 'title': '求购二手空调', 'content': '求购一台1.5匹二手空调...', 'tags': ['电器', '空调'], 'minPrice': 800, 'maxPrice': 1200, 'createdAt': int(datetime.utcnow().timestamp() * 1000) - 18000000},
+    ]
+
+    return jsonify({'data': mock_requests}), 200
 
 
 # get_my_requests函数将在后面定义

@@ -158,7 +158,7 @@ const carouselItems = ref([
     link: '/items?category=textbook'
   },
   {
-    image: '@/assets/images/banner2.jpg',
+    image: '@/assets/images/campus-digital-festival.jpg',
     title: '校园数码节',
     description: '数码产品低至5折，品质保证',
     link: '/items?category=digital'

@@ -2,6 +2,7 @@ from datetime import datetime
 from app import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+from app.modules.user.models import School, Campus, Major
 
 class AdminUser(db.Model, UserMixin):
     """管理员用户模型"""
@@ -128,78 +129,6 @@ class Complaint(db.Model):
                 }
         
         return result
-
-
-class School(db.Model):
-    """学校模型"""
-    __tablename__ = 'schools'
-    
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), unique=True, nullable=False)
-    province = db.Column(db.String(50))
-    city = db.Column(db.String(50))
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    
-    # 关系
-    campuses = db.relationship('Campus', backref='school', lazy=True)
-    
-    def to_dict(self):
-        return {
-            'id': self.id,
-            'name': self.name,
-            'province': self.province,
-            'city': self.city,
-            'created_at': self.created_at.isoformat() if self.created_at else None,
-            'updated_at': self.updated_at.isoformat() if self.updated_at else None
-        }
-
-
-class Campus(db.Model):
-    """校区模型"""
-    __tablename__ = 'campuses'
-    
-    id = db.Column(db.Integer, primary_key=True)
-    school_id = db.Column(db.Integer, db.ForeignKey('schools.id'), nullable=False)
-    name = db.Column(db.String(100), nullable=False)
-    address = db.Column(db.String(200))
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    
-    def to_dict(self):
-        return {
-            'id': self.id,
-            'school_id': self.school_id,
-            'school_name': self.school.name if self.school else None,
-            'name': self.name,
-            'address': self.address,
-            'created_at': self.created_at.isoformat() if self.created_at else None,
-            'updated_at': self.updated_at.isoformat() if self.updated_at else None
-        }
-
-
-class Major(db.Model):
-    """专业模型"""
-    __tablename__ = 'majors'
-    
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    school_id = db.Column(db.Integer, db.ForeignKey('schools.id'), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    
-    # 关系
-    school = db.relationship('School', backref='majors')
-    
-    def to_dict(self):
-        return {
-            'id': self.id,
-            'name': self.name,
-            'school_id': self.school_id,
-            'school_name': self.school.name if self.school else None,
-            'created_at': self.created_at.isoformat() if self.created_at else None,
-            'updated_at': self.updated_at.isoformat() if self.updated_at else None
-        }
 
 
 class ItemCategory(db.Model):

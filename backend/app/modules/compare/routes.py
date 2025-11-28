@@ -15,7 +15,7 @@ import re
 compare_bp = Blueprint('compare', __name__)
 
 
-@compare_bp.route('/task', methods=['POST'])
+@compare_bp.route('/tasks', methods=['POST'])
 @jwt_required()
 def create_compare_task():
     """创建比价任务"""
@@ -58,7 +58,7 @@ def create_compare_task():
     }), 201
 
 
-@compare_bp.route('/task/<int:task_id>', methods=['GET'])
+@compare_bp.route('/tasks/<int:task_id>', methods=['GET'])
 @jwt_required()
 def get_compare_task(task_id):
     """获取比价任务状态和结果"""
