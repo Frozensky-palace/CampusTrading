@@ -2,84 +2,84 @@
   <div class="item-create-container">
     <!-- 页面标题 -->
     <div class="page-header">
-      <h1>{{ isRentPage ? '发布租赁' : '发布商品' }}</h1>
-      <p>{{ isRentPage ? '快速发布您的租赁物品，让更多同学看到' : '快速发布您的闲置物品，让更多同学看到' }}</p>
+      <h1>{{ isRentPage ? $t('item.create.publishRent') : $t('item.create.publishItem') }}</h1>
+      <p>{{ isRentPage ? $t('item.create.publishRentSubtitle') : $t('item.create.publishItemSubtitle') }}</p>
     </div>
 
     <!-- 发布表单 -->
     <div class="form-container">
       <el-form ref="itemFormRef" :model="itemForm" :rules="itemRules" label-width="120px">
         <!-- 商品信息 -->
-        <el-form-item label="商品名称" prop="name">
-          <el-input v-model="itemForm.name" placeholder="请输入商品名称" maxlength="50" show-word-limit />
+        <el-form-item :label="$t('item.create.itemName')" prop="name">
+          <el-input v-model="itemForm.name" :placeholder="$t('item.create.itemNamePlaceholder')" maxlength="50" show-word-limit />
         </el-form-item>
 
-        <el-form-item label="商品分类" prop="category">
-          <el-select v-model="itemForm.category" placeholder="请选择商品分类">
-            <el-option label="数码电子" value="digital"></el-option>
-            <el-option label="学习资料" value="textbook"></el-option>
-            <el-option label="生活家居" value="home"></el-option>
-            <el-option label="体育用品" value="sports"></el-option>
-            <el-option label="服饰鞋包" value="clothing"></el-option>
-            <el-option label="其他类别" value="others"></el-option>
+        <el-form-item :label="$t('item.create.itemCategory')" prop="category">
+          <el-select v-model="itemForm.category" :placeholder="$t('item.create.selectCategory')">
+            <el-option :label="$t('item.categories.digital')" value="digital"></el-option>
+            <el-option :label="$t('item.categories.textbook')" value="textbook"></el-option>
+            <el-option :label="$t('item.categories.home')" value="home"></el-option>
+            <el-option :label="$t('item.categories.sports')" value="sports"></el-option>
+            <el-option :label="$t('item.categories.clothing')" value="clothing"></el-option>
+            <el-option :label="$t('item.categories.others')" value="others"></el-option>
           </el-select>
         </el-form-item>
 
         <!-- 交易类型 -->
-        <el-form-item label="交易类型" prop="transaction_type">
+        <el-form-item :label="$t('item.create.tradeType')" prop="transaction_type">
           <el-radio-group v-model="itemForm.transaction_type">
-            <el-radio-button label="出售">出售</el-radio-button>
-            <el-radio-button label="出租">出租</el-radio-button>
+            <el-radio-button label="出售">{{ $t('item.transactionType.sale') }}</el-radio-button>
+            <el-radio-button label="出租">{{ $t('item.transactionType.rent') }}</el-radio-button>
           </el-radio-group>
         </el-form-item>
 
         <!-- 价格信息 - 出售 -->
         <div v-if="itemForm.transaction_type === 'sale'">
-          <el-form-item label="出售价格" prop="price">
-            <el-input-number v-model="itemForm.price" :min="0" :precision="2" placeholder="请输入出售价格" />
+          <el-form-item :label="$t('item.create.sellPrice')" prop="price">
+            <el-input-number v-model="itemForm.price" :min="0" :precision="2" :placeholder="$t('item.create.enterSellPrice')" />
           </el-form-item>
 
-          <el-form-item label="原价" prop="originalPrice">
-            <el-input-number v-model="itemForm.originalPrice" :min="0" :precision="2" placeholder="请输入原价（选填）" />
+          <el-form-item :label="$t('item.originalPrice')" prop="originalPrice">
+            <el-input-number v-model="itemForm.originalPrice" :min="0" :precision="2" :placeholder="$t('item.create.originalPriceOptional')" />
           </el-form-item>
         </div>
 
         <!-- 价格信息 - 出租 -->
         <div v-if="itemForm.transaction_type === 'rent'">
-          <el-form-item label="日租金" prop="rental_price_day">
-            <el-input-number v-model="itemForm.rental_price_day" :min="0" :precision="2" placeholder="请输入日租金" />
+          <el-form-item :label="$t('item.create.dailyRent')" prop="rental_price_day">
+            <el-input-number v-model="itemForm.rental_price_day" :min="0" :precision="2" :placeholder="$t('item.create.enterDailyRent')" />
           </el-form-item>
 
-          <el-form-item label="周租金" prop="rental_price_week">
-            <el-input-number v-model="itemForm.rental_price_week" :min="0" :precision="2" placeholder="请输入周租金" />
+          <el-form-item :label="$t('item.create.weeklyRent')" prop="rental_price_week">
+            <el-input-number v-model="itemForm.rental_price_week" :min="0" :precision="2" :placeholder="$t('item.create.enterWeeklyRent')" />
           </el-form-item>
 
-          <el-form-item label="月租金" prop="rental_price_month">
-            <el-input-number v-model="itemForm.rental_price_month" :min="0" :precision="2" placeholder="请输入月租金" />
+          <el-form-item :label="$t('item.create.monthlyRent')" prop="rental_price_month">
+            <el-input-number v-model="itemForm.rental_price_month" :min="0" :precision="2" :placeholder="$t('item.create.enterMonthlyRent')" />
           </el-form-item>
 
-          <el-form-item label="押金" prop="deposit">
-            <el-input-number v-model="itemForm.deposit" :min="0" :precision="2" placeholder="请输入押金" />
+          <el-form-item :label="$t('item.create.depositLabel')" prop="deposit">
+            <el-input-number v-model="itemForm.deposit" :min="0" :precision="2" :placeholder="$t('item.create.enterDeposit')" />
           </el-form-item>
 
-          <el-form-item label="最大租赁天数" prop="max_rental_days">
-            <el-input-number v-model="itemForm.max_rental_days" :min="1" placeholder="请输入最大租赁天数" />
+          <el-form-item :label="$t('item.create.maxRentDays')" prop="max_rental_days">
+            <el-input-number v-model="itemForm.max_rental_days" :min="1" :placeholder="$t('item.create.enterMaxRentDays')" />
           </el-form-item>
         </div>
 
         <!-- 商品状态 -->
-        <el-form-item label="新旧程度" prop="condition">
+        <el-form-item :label="$t('item.create.conditionLabel')" prop="condition">
           <el-radio-group v-model="itemForm.condition">
-            <el-radio-button label="全新">全新</el-radio-button>
-            <el-radio-button label="九成新">九成新</el-radio-button>
-            <el-radio-button label="八成新">八成新</el-radio-button>
-            <el-radio-button label="七成新">七成新</el-radio-button>
-            <el-radio-button label="六成新及以下">六成新及以下</el-radio-button>
+            <el-radio-button label="全新">{{ $t('item.create.conditionNew') }}</el-radio-button>
+            <el-radio-button label="九成新">{{ $t('item.create.condition90') }}</el-radio-button>
+            <el-radio-button label="八成新">{{ $t('item.create.condition80') }}</el-radio-button>
+            <el-radio-button label="七成新">{{ $t('item.create.condition70') }}</el-radio-button>
+            <el-radio-button label="六成新及以下">{{ $t('item.create.condition60') }}</el-radio-button>
           </el-radio-group>
         </el-form-item>
 
         <!-- 商品图片 -->
-        <el-form-item label="商品图片" prop="images">
+        <el-form-item :label="$t('item.create.itemImages')" prop="images">
           <el-upload
             v-model:file-list="fileList"
             class="upload-demo"
@@ -106,43 +106,43 @@
               </div>
             </template>
           </el-upload>
-          <el-dialog v-model="dialogVisible" title="预览" width="800px">
-            <img w-full :src="dialogImageUrl" alt="预览图片" />
+          <el-dialog v-model="dialogVisible" :title="$t('item.create.preview')" width="800px">
+            <img w-full :src="dialogImageUrl" alt="" />
           </el-dialog>
-          <div class="upload-tip">* 最多上传8张图片，支持jpg、jpeg、png格式，单张图片不超过5MB</div>
+          <div class="upload-tip">{{ $t('item.create.imageTip') }}</div>
         </el-form-item>
 
         <!-- 商品描述 -->
-        <el-form-item label="商品描述" prop="description">
+        <el-form-item :label="$t('item.create.itemDescLabel')" prop="description">
           <el-input
             v-model="itemForm.description"
             type="textarea"
             :rows="8"
-            placeholder="请详细描述您的商品信息，如购买时间、使用情况、配件情况等"
+            :placeholder="$t('item.create.itemDescPlaceholder')"
             maxlength="2000"
             show-word-limit
           />
-          <div class="description-tip">* 详细的描述可以提高商品被购买的几率</div>
+          <div class="description-tip">{{ $t('item.create.descTip') }}</div>
         </el-form-item>
 
         <!-- 交易信息 -->
-        <el-form-item label="交易地点" prop="location">
-          <el-input v-model="itemForm.location" placeholder="请输入交易地点，如：主校区图书馆门口" maxlength="100" show-word-limit />
+        <el-form-item :label="$t('item.create.tradeLocation')" prop="location">
+          <el-input v-model="itemForm.location" :placeholder="$t('item.create.tradeLocationPlaceholder')" maxlength="100" show-word-limit />
         </el-form-item>
 
-        <el-form-item label="交易方式" prop="shippingMethods">
+        <el-form-item :label="$t('item.create.tradeMethods')" prop="shippingMethods">
           <el-checkbox-group v-model="itemForm.shippingMethods">
-            <el-checkbox label="校园面交" name="shipping" />
-            <el-checkbox label="快递邮寄" name="shipping" />
-            <el-checkbox label="其他方式" name="shipping" />
+            <el-checkbox label="校园面交" name="shipping">{{ $t('item.create.faceToFace') }}</el-checkbox>
+            <el-checkbox label="快递邮寄" name="shipping">{{ $t('item.create.express') }}</el-checkbox>
+            <el-checkbox label="其他方式" name="shipping">{{ $t('item.create.otherMethod') }}</el-checkbox>
           </el-checkbox-group>
         </el-form-item>
 
         <!-- 商品标签 -->
-        <el-form-item label="商品标签">
+        <el-form-item :label="$t('item.create.itemTags')">
           <el-input
             v-model="tagInput"
-            placeholder="输入标签后按回车添加"
+            :placeholder="$t('item.create.tagPlaceholder')"
             @keyup.enter="addTag"
             style="width: 300px; margin-right: 10px;"
           />
@@ -155,22 +155,22 @@
           >
             {{ tag }}
           </el-tag>
-          <div class="tag-tip">* 最多添加5个标签，每个标签不超过8个字符</div>
+          <div class="tag-tip">{{ $t('item.create.tagTip') }}</div>
         </el-form-item>
 
         <!-- 商品规格（动态添加） -->
-        <el-form-item label="商品规格">
+        <el-form-item :label="$t('item.create.itemSpecs')">
           <div v-for="(spec, index) in itemForm.specs" :key="index" class="spec-item">
             <el-input
               v-model="spec.key"
-              placeholder="规格名称"
+              :placeholder="$t('item.create.specName')"
               style="width: 150px; margin-right: 10px;"
               @input="validateSpecs"
             />
             <span>:</span>
             <el-input
               v-model="spec.value"
-              placeholder="规格值"
+              :placeholder="$t('item.create.specValue')"
               style="width: 200px; margin-left: 10px;"
               @input="validateSpecs"
             />
@@ -189,34 +189,34 @@
             :disabled="itemForm.specs.length >= 10"
             style="margin-top: 10px;"
           >
-            添加规格
+            {{ $t('item.create.addSpec') }}
           </el-button>
-          <div class="spec-tip">* 最多添加10个规格项</div>
+          <div class="spec-tip">{{ $t('item.create.specTip') }}</div>
         </el-form-item>
 
         <!-- 提交按钮 -->
         <el-form-item>
           <div class="form-actions">
-            <el-button @click="resetForm">重置</el-button>
-            <el-button type="primary" @click="submitForm">发布商品</el-button>
+            <el-button @click="resetForm">{{ $t('item.create.reset') }}</el-button>
+            <el-button type="primary" @click="submitForm">{{ $t('item.create.publish') }}</el-button>
           </div>
         </el-form-item>
       </el-form>
     </div>
 
     <!-- 发布成功提示 -->
-    <el-dialog v-model="successDialogVisible" title="发布成功" width="400px" :show-close="false">
+    <el-dialog v-model="successDialogVisible" :title="$t('item.create.publishSuccess')" width="400px" :show-close="false">
       <div class="success-content">
         <div class="success-icon">
           <i class="el-icon-success"></i>
         </div>
-        <p class="success-text">恭喜您，商品发布成功！</p>
-        <p class="success-hint">您的商品将在审核通过后显示在商品列表中</p>
+        <p class="success-text">{{ $t('item.create.congratsPublish') }}</p>
+        <p class="success-hint">{{ $t('item.create.reviewHint') }}</p>
       </div>
       <template #footer>
         <div class="dialog-actions">
-          <el-button @click="viewItem">查看商品</el-button>
-          <el-button type="primary" @click="publishAnother">发布另一个</el-button>
+          <el-button @click="viewItem">{{ $t('item.create.viewItem') }}</el-button>
+          <el-button type="primary" @click="publishAnother">{{ $t('item.create.publishAnother') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -229,6 +229,9 @@ import { useRouter, useRoute } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import { createItem, itemAPI } from '@/api/item';
 import { Plus, Delete } from '@element-plus/icons-vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 // 路由
 const router = useRouter();
@@ -275,57 +278,57 @@ const successDialogVisible = ref(false);
 const createdItemId = ref('');
 
 // 表单验证规则
-const itemRules = reactive({
+const itemRules = computed(() => ({
   name: [
-    { required: true, message: '请输入商品名称', trigger: 'blur' },
-    { min: 2, max: 50, message: '商品名称长度在 2 到 50 个字符', trigger: 'blur' }
+    { required: true, message: t('item.create.validation.nameRequired'), trigger: 'blur' },
+    { min: 2, max: 50, message: t('item.create.validation.nameLength'), trigger: 'blur' }
   ],
   category: [
-    { required: true, message: '请选择商品分类', trigger: 'change' }
+    { required: true, message: t('item.create.validation.categoryRequired'), trigger: 'change' }
   ],
   transaction_type: [
-    { required: true, message: '请选择交易类型', trigger: 'change' }
+    { required: true, message: t('item.create.validation.tradeTypeRequired'), trigger: 'change' }
   ],
   price: [
-    { required: (() => itemForm.transaction_type === 'sale'), message: '请输入出售价格', trigger: 'blur' },
-    { type: 'number', min: 0.01, message: '价格必须大于0', trigger: 'blur' }
+    { required: (() => itemForm.transaction_type === 'sale'), message: t('item.create.validation.priceRequired'), trigger: 'blur' },
+    { type: 'number', min: 0.01, message: t('item.create.validation.pricePositive'), trigger: 'blur' }
   ],
   // 租赁相关验证
   rental_price_day: [
-    { required: (() => itemForm.transaction_type === 'rent'), message: '请输入日租金', trigger: 'blur' },
-    { type: 'number', min: 0.01, message: '日租金必须大于0', trigger: 'blur' }
+    { required: (() => itemForm.transaction_type === 'rent'), message: t('item.create.validation.dailyRentRequired'), trigger: 'blur' },
+    { type: 'number', min: 0.01, message: t('item.create.validation.dailyRentPositive'), trigger: 'blur' }
   ],
   rental_price_week: [
-    { type: 'number', min: 0, message: '周租金必须大于等于0', trigger: 'blur' }
+    { type: 'number', min: 0, message: t('item.create.validation.weeklyRentPositive'), trigger: 'blur' }
   ],
   rental_price_month: [
-    { type: 'number', min: 0, message: '月租金必须大于等于0', trigger: 'blur' }
+    { type: 'number', min: 0, message: t('item.create.validation.monthlyRentPositive'), trigger: 'blur' }
   ],
   deposit: [
-    { type: 'number', min: 0, message: '押金必须大于等于0', trigger: 'blur' }
+    { type: 'number', min: 0, message: t('item.create.validation.depositPositive'), trigger: 'blur' }
   ],
   max_rental_days: [
-    { required: (() => itemForm.transaction_type === 'rent'), message: '请输入最大租赁天数', trigger: 'blur' },
-    { type: 'number', min: 1, message: '最大租赁天数必须大于0', trigger: 'blur' }
+    { required: (() => itemForm.transaction_type === 'rent'), message: t('item.create.validation.maxRentDaysRequired'), trigger: 'blur' },
+    { type: 'number', min: 1, message: t('item.create.validation.maxRentDaysPositive'), trigger: 'blur' }
   ],
   condition: [
-    { required: true, message: '请选择新旧程度', trigger: 'change' }
+    { required: true, message: t('item.create.validation.conditionRequired'), trigger: 'change' }
   ],
   description: [
-    { required: true, message: '请输入商品描述', trigger: 'blur' },
-    { min: 10, max: 2000, message: '商品描述长度在 10 到 2000 个字符', trigger: 'blur' }
+    { required: true, message: t('item.create.validation.descRequired'), trigger: 'blur' },
+    { min: 10, max: 2000, message: t('item.create.validation.descLength'), trigger: 'blur' }
   ],
   location: [
-    { required: true, message: '请输入交易地点', trigger: 'blur' },
-    { min: 2, max: 100, message: '交易地点长度在 2 到 100 个字符', trigger: 'blur' }
+    { required: true, message: t('item.create.validation.locationRequired'), trigger: 'blur' },
+    { min: 2, max: 100, message: t('item.create.validation.locationLength'), trigger: 'blur' }
   ],
   shippingMethods: [
-    { required: true, message: '请至少选择一种交易方式', trigger: 'change' }
+    { required: true, message: t('item.create.validation.shippingRequired'), trigger: 'change' }
   ],
   images: [
-    { required: true, message: '请至少上传一张商品图片', trigger: 'change' }
+    { required: true, message: t('item.create.validation.imagesRequired'), trigger: 'change' }
   ]
-});
+}));
 
 // 处理文件变化
 const handleFileChange = (uploadFile: any, _uploadFiles: any[]) => {
@@ -336,11 +339,11 @@ const handleFileChange = (uploadFile: any, _uploadFiles: any[]) => {
   const isLt5M = uploadFile.raw.size / 1024 / 1024 < 5;
 
   if (!isJPG && !isPNG && !isJPEG) {
-    ElMessage.error('上传图片只能是 JPG/PNG 格式!');
+    ElMessage.error(t('item.create.imageFormatError'));
     return false;
   }
   if (!isLt5M) {
-    ElMessage.error('上传图片大小不能超过 5MB!');
+    ElMessage.error(t('item.create.imageSizeError'));
     return false;
   }
 
@@ -364,7 +367,7 @@ const handleRemove = (file: any) => {
 
 // 处理文件超出数量限制
 const handleExceed = (_files: any, fileList: any) => {
-  ElMessage.error(`最多只能上传${fileList.length}张图片`);
+  ElMessage.error(t('item.create.maxImages'));
 };
 
 // 预览图片
@@ -377,13 +380,13 @@ const handlePictureCardPreview = (file: any) => {
 const addTag = () => {
   if (tagInput.value.trim() && itemForm.tags.length < 5) {
     if (itemForm.tags.includes(tagInput.value.trim())) {
-      ElMessage.warning('该标签已存在');
+      ElMessage.warning(t('item.create.tagExists'));
     } else {
       itemForm.tags.push(tagInput.value.trim());
       tagInput.value = '';
     }
   } else if (itemForm.tags.length >= 5) {
-    ElMessage.warning('最多只能添加5个标签');
+    ElMessage.warning(t('item.create.maxTags'));
   }
 };
 
@@ -400,7 +403,7 @@ const addSpec = () => {
   if (itemForm.specs.length < 10) {
     itemForm.specs.push({ key: '', value: '' });
   } else {
-    ElMessage.warning('最多只能添加10个规格项');
+    ElMessage.warning(t('item.create.maxSpecs'));
   }
 };
 
@@ -436,7 +439,7 @@ const submitForm = async () => {
     
     // 检查是否有图片
     if (uploadedFiles.value.length === 0) {
-      ElMessage.error('请至少上传一张商品图片');
+      ElMessage.error(t('item.create.uploadAtLeastOne'));
       return;
     }
     
@@ -497,7 +500,7 @@ const submitForm = async () => {
     if (error.response?.data?.message) {
       ElMessage.error(error.response.data.message);
     } else {
-      ElMessage.error(isRentPage.value ? '发布租赁失败，请稍后重试' : '发布商品失败，请稍后重试');
+      ElMessage.error(isRentPage.value ? t('item.create.publishRentFailed') : t('item.create.publishFailed'));
     }
   } finally {
     loading.value = false;

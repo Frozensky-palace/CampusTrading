@@ -2,8 +2,8 @@
   <div class="item-list-container">
     <!-- 页面标题 -->
     <div class="page-header">
-      <h1>商品列表</h1>
-      <p>发现校园内的优质二手商品</p>
+      <h1>{{ $t('item.list.title') }}</h1>
+      <p>{{ $t('item.list.subtitle') }}</p>
     </div>
 
     <!-- 筛选和排序区域 -->
@@ -11,63 +11,63 @@
       <div class="filter-container">
         <!-- 分类筛选 -->
         <div class="filter-item">
-          <label>分类：</label>
-          <el-select v-model="category" placeholder="全部分类" @change="handleFilterChange">
-            <el-option label="全部分类" value=""></el-option>
-            <el-option label="数码电子" value="digital"></el-option>
-            <el-option label="学习资料" value="textbook"></el-option>
-            <el-option label="生活家居" value="home"></el-option>
-            <el-option label="体育用品" value="sports"></el-option>
-            <el-option label="服饰鞋包" value="clothing"></el-option>
-            <el-option label="其他类别" value="others"></el-option>
+          <label>{{ $t('item.list.filterCategory') }}：</label>
+          <el-select v-model="category" :placeholder="$t('item.list.allCategories')" @change="handleFilterChange">
+            <el-option :label="$t('item.list.allCategories')" value=""></el-option>
+            <el-option :label="$t('item.categories.digital')" value="digital"></el-option>
+            <el-option :label="$t('item.categories.textbook')" value="textbook"></el-option>
+            <el-option :label="$t('item.categories.home')" value="home"></el-option>
+            <el-option :label="$t('item.categories.sports')" value="sports"></el-option>
+            <el-option :label="$t('item.categories.clothing')" value="clothing"></el-option>
+            <el-option :label="$t('item.categories.others')" value="others"></el-option>
           </el-select>
         </div>
 
         <!-- 交易类型筛选 -->
         <div class="filter-item">
-          <label>交易类型：</label>
-          <el-select v-model="tradeType" placeholder="全部类型" @change="handleFilterChange">
-            <el-option label="全部类型" value=""></el-option>
-            <el-option label="普通交易" value="sale"></el-option>
-            <el-option label="租赁" value="rent"></el-option>
+          <label>{{ $t('item.list.filterTradeType') }}：</label>
+          <el-select v-model="tradeType" :placeholder="$t('item.list.allTypes')" @change="handleFilterChange">
+            <el-option :label="$t('item.list.allTypes')" value=""></el-option>
+            <el-option :label="$t('item.list.normalTrade')" value="sale"></el-option>
+            <el-option :label="$t('item.list.rental')" value="rent"></el-option>
           </el-select>
         </div>
 
         <!-- 价格区间筛选 -->
         <div class="filter-item">
-          <label>价格：</label>
-          <el-input-number v-model="minPrice" placeholder="最低价" size="small" :min="0"></el-input-number>
+          <label>{{ $t('item.list.filterPrice') }}：</label>
+          <el-input-number v-model="minPrice" :placeholder="$t('item.list.minPrice')" size="small" :min="0"></el-input-number>
           <span class="price-separator">-</span>
-          <el-input-number v-model="maxPrice" placeholder="最高价" size="small" :min="minPrice || 0"></el-input-number>
-          <el-button type="primary" size="small" @click="handleFilterChange">确定</el-button>
+          <el-input-number v-model="maxPrice" :placeholder="$t('item.list.maxPrice')" size="small" :min="minPrice || 0"></el-input-number>
+          <el-button type="primary" size="small" @click="handleFilterChange">{{ $t('item.list.confirm') }}</el-button>
         </div>
 
         <!-- 状态筛选 -->
         <div class="filter-item">
-          <label>状态：</label>
-          <el-select v-model="status" placeholder="全部状态" @change="handleFilterChange">
-            <el-option label="全部状态" value=""></el-option>
-            <el-option label="在售" value="available"></el-option>
-            <el-option label="已售出" value="sold"></el-option>
+          <label>{{ $t('item.list.filterStatus') }}：</label>
+          <el-select v-model="status" :placeholder="$t('item.list.allStatus')" @change="handleFilterChange">
+            <el-option :label="$t('item.list.allStatus')" value=""></el-option>
+            <el-option :label="$t('item.list.onSale')" value="available"></el-option>
+            <el-option :label="$t('item.list.soldOut')" value="sold"></el-option>
           </el-select>
         </div>
 
         <!-- 排序方式 -->
         <div class="filter-item">
-          <label>排序：</label>
-          <el-select v-model="sortBy" placeholder="默认排序" @change="handleFilterChange">
-            <el-option label="默认排序" value=""></el-option>
-            <el-option label="价格从低到高" value="price_asc"></el-option>
-            <el-option label="价格从高到低" value="price_desc"></el-option>
-            <el-option label="最新发布" value="time_desc"></el-option>
-            <el-option label="最热商品" value="popular"></el-option>
+          <label>{{ $t('item.list.sortBy') }}：</label>
+          <el-select v-model="sortBy" :placeholder="$t('item.list.defaultSort')" @change="handleFilterChange">
+            <el-option :label="$t('item.list.defaultSort')" value=""></el-option>
+            <el-option :label="$t('item.list.priceLowToHigh')" value="price_asc"></el-option>
+            <el-option :label="$t('item.list.priceHighToLow')" value="price_desc"></el-option>
+            <el-option :label="$t('item.list.newest')" value="time_desc"></el-option>
+            <el-option :label="$t('item.list.popular')" value="popular"></el-option>
           </el-select>
         </div>
       </div>
 
       <!-- 搜索框 -->
       <div class="search-container">
-        <el-input v-model="searchQuery" placeholder="搜索商品名称、描述..." @keyup.enter="handleSearch">
+        <el-input v-model="searchQuery" :placeholder="$t('item.list.searchPlaceholder')" @keyup.enter="handleSearch">
           <template #append>
             <el-button @click="handleSearch"><i class="el-icon-search"></i></el-button>
           </template>
@@ -77,7 +77,7 @@
 
     <!-- 标签筛选 -->
     <div class="tags-filter">
-      <span class="tags-label">热门标签：</span>
+      <span class="tags-label">{{ $t('item.list.hotTags') }}：</span>
       <el-tag v-for="tag in popularTags" :key="tag" :type="selectedTags.includes(tag) ? 'primary' : 'info'" @click="handleTagClick(tag)">{{ tag }}</el-tag>
     </div>
 
@@ -87,14 +87,14 @@
         <router-link :to="`/items/${item.id}`" class="item-link">
           <div class="item-image">
             <img :src="item.image" :alt="item.name" class="image">
-            <span v-if="item.discount" class="discount-badge">{{ item.discount }}折</span>
-            <span v-if="item.status === 'sold'" class="sold-badge">已售出</span>
-            <span v-if="item.tradeType === 'rent'" class="rent-badge">租赁</span>
+            <span v-if="item.discount" class="discount-badge">{{ item.discount }}{{ $t('item.list.discount') }}</span>
+            <span v-if="item.status === 'sold'" class="sold-badge">{{ $t('item.list.soldOut') }}</span>
+            <span v-if="item.tradeType === 'rent'" class="rent-badge">{{ $t('item.list.rental') }}</span>
           </div>
           <div class="item-info">
             <h3 class="item-name">{{ item.name }}</h3>
             <div class="item-price">
-              <span v-if="item.tradeType === 'rent'" class="price-label">￥{{ item.rental_price_day }}/天</span>
+              <span v-if="item.tradeType === 'rent'" class="price-label">￥{{ item.rental_price_day }}{{ $t('item.list.perDay') }}</span>
               <span v-else class="price">¥{{ item.price }}</span>
               <span v-if="item.originalPrice" class="original-price">¥{{ item.originalPrice }}</span>
             </div>
@@ -129,16 +129,19 @@
 
     <!-- 空状态 -->
     <div v-if="!loading && items.length === 0" class="empty-state">
-      <el-empty description="暂无符合条件的商品" />
-      <el-button type="primary" @click="resetFilters">重置筛选条件</el-button>
+      <el-empty :description="$t('item.list.noItems')" />
+      <el-button type="primary" @click="resetFilters">{{ $t('item.list.resetFilters') }}</el-button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { searchItems } from '@/api/item';
 import { formatTime } from '@/utils/common';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 // 定义商品类型接口
 interface Item {
@@ -184,7 +187,7 @@ const handleSearch = async () => {
     items.value = res.data.items;
     totalItems.value = res.data.total;
   } catch (error) {
-    console.error('搜索商品失败:', error);
+    console.error(t('item.list.searchFailed'), error);
   }
 };
 
@@ -225,7 +228,14 @@ const pageSize = ref(12);
 const loading = ref(false);
 const items = ref<Item[]>([]);
 const totalItems = ref(0);
-const popularTags = ref<string[]>(['笔记本电脑', '考研资料', '自行车', '篮球', '吉他', '绘图板']);
+const popularTags = computed(() => [
+  t('item.list.popularTags.laptop'),
+  t('item.list.popularTags.examMaterials'),
+  t('item.list.popularTags.bicycle'),
+  t('item.list.popularTags.basketball'),
+  t('item.list.popularTags.guitar'),
+  t('item.list.popularTags.drawingTablet')
+]);
 // ... existing code ...
 </script>
 

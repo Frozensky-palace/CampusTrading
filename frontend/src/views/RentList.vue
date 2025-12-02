@@ -2,8 +2,8 @@
   <div class="rent-list-container">
     <!-- 页面标题 -->
     <div class="page-header">
-      <h1>租赁列表</h1>
-      <p>寻找适合您的租赁物品</p>
+      <h1>{{ $t('rent.title') }}</h1>
+      <p>{{ $t('rent.subtitle') }}</p>
     </div>
 
     <!-- 筛选条件 -->
@@ -11,23 +11,23 @@
       <div class="filter-row">
         <el-input
           v-model="searchKeyword"
-          placeholder="搜索租赁物品"
+          :placeholder="$t('rent.searchPlaceholder')"
           class="search-input"
           prefix-icon="el-icon-search"
         />
         <el-select
           v-model="categoryFilter"
-          placeholder="选择分类"
+          :placeholder="$t('rent.selectCategory')"
           class="category-select"
         >
-          <el-option label="全部" value="" />
-          <el-option label="电子产品" value="electronics" />
-          <el-option label="体育用品" value="sports" />
-          <el-option label="乐器" value="music" />
-          <el-option label="书籍" value="books" />
-          <el-option label="其他" value="other" />
+          <el-option :label="$t('rent.categories.all')" value="" />
+          <el-option :label="$t('rent.categories.electronics')" value="electronics" />
+          <el-option :label="$t('rent.categories.sports')" value="sports" />
+          <el-option :label="$t('rent.categories.music')" value="music" />
+          <el-option :label="$t('rent.categories.books')" value="books" />
+          <el-option :label="$t('rent.categories.other')" value="other" />
         </el-select>
-        <el-button type="primary" @click="searchItems" class="search-btn">搜索</el-button>
+        <el-button type="primary" @click="searchItems" class="search-btn">{{ $t('rent.search') }}</el-button>
       </div>
       <div class="filter-row">
         <el-slider
@@ -47,17 +47,17 @@
         <router-link :to="`/rent/detail/${item.id}`" class="item-link">
           <div class="item-image">
             <img :src="item.image" :alt="item.name" class="image">
-            <span class="rent-tag">可租赁</span>
+            <span class="rent-tag">{{ $t('rent.forRent') }}</span>
           </div>
           <div class="item-info">
             <h3 class="item-name">{{ item.name }}</h3>
             <div class="item-price">
-              <span class="price">¥{{ item.price }}/天</span>
-              <span class="deposit">押金: ¥{{ item.deposit }}</span>
+              <span class="price">¥{{ item.price }}{{ $t('rent.perDay') }}</span>
+              <span class="deposit">{{ $t('rent.deposit') }}: ¥{{ item.deposit }}</span>
             </div>
             <div class="item-meta">
               <span class="location"><i class="el-icon-location"></i>{{ item.location }}</span>
-              <span class="available"><i class="el-icon-check"></i>{{ item.available ? '可租' : '已租' }}</span>
+              <span class="available"><i class="el-icon-check"></i>{{ item.available ? $t('rent.available') : $t('rent.rented') }}</span>
             </div>
           </div>
         </router-link>
@@ -78,13 +78,16 @@
 
     <!-- 发布租赁按钮 -->
     <router-link to="/rent/create" class="create-btn">
-      <el-button type="primary" size="large">发布租赁物品</el-button>
+      <el-button type="primary" size="large">{{ $t('rent.publishRent') }}</el-button>
     </router-link>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 // 搜索和筛选条件
 const searchKeyword = ref('');
@@ -110,69 +113,69 @@ interface RentItem {
 
 const rentItems = ref<RentItem[]>([]);
 
-// 模拟租赁数据
-const mockRentItems: RentItem[] = [
+// 模拟租赁数据 - 使用 computed 支持 i18n
+const mockRentItems = computed(() => [
   {
     id: 1,
-    name: '专业相机Canon EOS R5',
+    name: t('rent.mockData.camera'),
     image: '/assets/images/camera.jpg',
     price: 150,
     deposit: 3000,
-    location: '主校区',
+    location: t('rent.mockData.locations.mainCampus'),
     available: true,
     category: 'electronics'
   },
   {
     id: 2,
-    name: '专业绘图板Wacom',
+    name: t('rent.mockData.tablet'),
     image: '/assets/images/tablet.jpg',
     price: 50,
     deposit: 800,
-    location: '设计学院',
+    location: t('rent.mockData.locations.designSchool'),
     available: true,
     category: 'electronics'
   },
   {
     id: 3,
-    name: '篮球Nike NBA官方用球',
+    name: t('rent.mockData.basketball'),
     image: '/assets/images/basketball.jpg',
     price: 20,
     deposit: 200,
-    location: '体育馆',
+    location: t('rent.mockData.locations.gym'),
     available: true,
     category: 'sports'
   },
   {
     id: 4,
-    name: '古典吉他雅马哈',
+    name: t('rent.mockData.guitar'),
     image: '/assets/images/guitar.jpg',
     price: 80,
     deposit: 1000,
-    location: '音乐楼',
+    location: t('rent.mockData.locations.musicBuilding'),
     available: false,
     category: 'music'
   },
   {
     id: 5,
-    name: '考研全套复习资料',
+    name: t('rent.mockData.examBooks'),
     image: '/assets/images/book1.jpg',
     price: 10,
     deposit: 200,
-    location: '图书馆',
+    location: t('rent.mockData.locations.library'),
     available: true,
     category: 'books'
   },
   {
     id: 6,
-    name: '校园自行车捷安特',
+    name: t('rent.mockData.bicycle'),
     image: '/assets/images/bike1.jpg',
     price: 30,
     deposit: 500,
-    location: '车棚',
+    location: t('rent.mockData.locations.bikeShed'),
     available: true,
     category: 'other'
   }
-];
+]);
 
 // 加载租赁物品数据
 const loadRentItems = async () => {
@@ -186,14 +189,14 @@ const loadRentItems = async () => {
     //   minPrice: priceRange.value[0],
     //   maxPrice: priceRange.value[1]
     // });
-    
+
     // 使用模拟数据
-    rentItems.value = mockRentItems;
-    totalCount.value = mockRentItems.length;
+    rentItems.value = mockRentItems.value;
+    totalCount.value = mockRentItems.value.length;
   } catch (error) {
-    console.error('加载租赁物品失败:', error);
-    rentItems.value = mockRentItems;
-    totalCount.value = mockRentItems.length;
+    console.error(t('rent.loadFailed'), error);
+    rentItems.value = mockRentItems.value;
+    totalCount.value = mockRentItems.value.length;
   }
 };
 

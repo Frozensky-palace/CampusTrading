@@ -5,76 +5,76 @@
       <div class="footer-content">
         <!-- 网站介绍 -->
         <div class="footer-about">
-          <h3 class="footer-title">校园二手交易平台</h3>
+          <h3 class="footer-title">{{ $t('footer.about') }}</h3>
           <p class="footer-description">
-            为校园师生提供便捷、安全的二手商品交易服务，帮助大家实现资源共享和循环利用，共同建设绿色校园。
+            {{ $t('footer.aboutDesc') }}
           </p>
           <div class="footer-social">
-            <a href="#" class="social-link" title="微信公众号"><i class="el-icon-chat-line-square"></i></a>
-            <a href="#" class="social-link" title="QQ群"><i class="el-icon-chat-dot-round"></i></a>
-            <a href="#" class="social-link" title="微博"><i class="el-icon-share"></i></a>
+            <a href="#" class="social-link" title="WeChat"><el-icon><ChatLineSquare /></el-icon></a>
+            <a href="#" class="social-link" title="QQ"><el-icon><ChatDotRound /></el-icon></a>
+            <a href="#" class="social-link" title="Weibo"><el-icon><Share /></el-icon></a>
           </div>
         </div>
-        
+
         <!-- 快速链接 -->
         <div class="footer-links">
-          <h3 class="footer-title">快速链接</h3>
+          <h3 class="footer-title">{{ $t('footer.quickLinks') }}</h3>
           <ul class="link-list">
-            <li><router-link to="/" class="link-item">首页</router-link></li>
-            <li><router-link to="/items" class="link-item">商品列表</router-link></li>
-            <li><router-link to="/requests" class="link-item">求购信息</router-link></li>
-            <li><router-link to="/compare" class="link-item">比价中心</router-link></li>
-            <li><router-link to="/about" class="link-item">关于我们</router-link></li>
+            <li><router-link to="/" class="link-item">{{ $t('nav.home') }}</router-link></li>
+            <li><router-link to="/items" class="link-item">{{ $t('nav.items') }}</router-link></li>
+            <li><router-link to="/requests" class="link-item">{{ $t('nav.requests') }}</router-link></li>
+            <li><router-link to="/compare" class="link-item">{{ $t('nav.compare') }}</router-link></li>
+            <li><router-link to="/about" class="link-item">{{ $t('nav.about') }}</router-link></li>
           </ul>
         </div>
-        
+
         <!-- 帮助中心 -->
         <div class="footer-help">
-          <h3 class="footer-title">帮助中心</h3>
+          <h3 class="footer-title">{{ $t('footer.helpCenter') }}</h3>
           <ul class="link-list">
-            <li><a href="#" class="link-item">新手指南</a></li>
-            <li><a href="#" class="link-item">交易规则</a></li>
-            <li><a href="#" class="link-item">常见问题</a></li>
-            <li><a href="#" class="link-item">用户反馈</a></li>
-            <li><a href="#" class="link-item">联系客服</a></li>
+            <li><a href="#" class="link-item">{{ $t('footer.newbieGuide') }}</a></li>
+            <li><a href="#" class="link-item">{{ $t('footer.tradingRules') }}</a></li>
+            <li><a href="#" class="link-item">{{ $t('footer.faq') }}</a></li>
+            <li><a href="#" class="link-item">{{ $t('footer.feedback') }}</a></li>
+            <li><a href="#" class="link-item">{{ $t('footer.customerService') }}</a></li>
           </ul>
         </div>
-        
+
         <!-- 联系我们 -->
         <div class="footer-contact">
-          <h3 class="footer-title">联系我们</h3>
+          <h3 class="footer-title">{{ $t('footer.contactUs') }}</h3>
           <ul class="contact-list">
             <li class="contact-item">
-              <i class="el-icon-location"></i>
-              <span>校园地址：XX大学XX校区</span>
+              <el-icon><Location /></el-icon>
+              <span>{{ $t('footer.address') }}</span>
             </li>
             <li class="contact-item">
-              <i class="el-icon-phone"></i>
-              <span>联系电话：123-4567-8910</span>
+              <el-icon><Phone /></el-icon>
+              <span>{{ $t('footer.phone') }}</span>
             </li>
             <li class="contact-item">
-              <i class="el-icon-message"></i>
-              <span>邮箱：contact@campustrading.com</span>
+              <el-icon><Message /></el-icon>
+              <span>{{ $t('footer.email') }}</span>
             </li>
             <li class="contact-item">
-              <i class="el-icon-service"></i>
-              <span>工作时间：周一至周日 9:00-22:00</span>
+              <el-icon><Service /></el-icon>
+              <span>{{ $t('footer.workTime') }}</span>
             </li>
           </ul>
         </div>
       </div>
-      
+
       <!-- 页脚底部 -->
       <div class="footer-bottom">
         <div class="footer-copyright">
-          © 2023 校园二手交易平台 版权所有 | 备案号：粤ICP备XXXXXXXX号
+          {{ $t('footer.copyright') }}
         </div>
         <div class="footer-links-bottom">
-          <a href="#" class="link-item">隐私政策</a>
+          <a href="#" class="link-item">{{ $t('footer.privacyPolicy') }}</a>
           <span class="separator">|</span>
-          <a href="#" class="link-item">用户协议</a>
+          <a href="#" class="link-item">{{ $t('footer.userAgreement') }}</a>
           <span class="separator">|</span>
-          <a href="#" class="link-item">免责声明</a>
+          <a href="#" class="link-item">{{ $t('footer.disclaimer') }}</a>
         </div>
       </div>
     </div>
@@ -82,12 +82,15 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
-
-// 组件挂载时的处理
-onMounted(() => {
-  // 可以在这里添加一些初始化逻辑
-});
+import {
+  ChatLineSquare,
+  ChatDotRound,
+  Share,
+  Location,
+  Phone,
+  Message,
+  Service
+} from '@element-plus/icons-vue';
 </script>
 
 <style lang="scss" scoped>

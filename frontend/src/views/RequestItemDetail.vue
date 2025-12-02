@@ -13,38 +13,38 @@
         <el-card class="request-item-card">
           <div class="request-item-header">
             <h1 class="request-item-title">{{ requestItem.title }}</h1>
-            <span class="price-tag">最高出价：￥{{ formatPrice(requestItem.maxPrice) }}</span>
+            <span class="price-tag">{{ $t('request.detail.maxOffer') }}￥{{ formatPrice(requestItem.maxPrice) }}</span>
           </div>
 
           <!-- 求购基本信息 -->
           <div class="request-item-info">
             <div class="info-row">
-              <span class="info-label">求购分类：</span>
+              <span class="info-label">{{ $t('request.detail.category') }}</span>
               <span class="info-value">{{ getCategoryName(requestItem.category) }}</span>
             </div>
             <div class="info-row">
-              <span class="info-label">发布时间：</span>
+              <span class="info-label">{{ $t('request.detail.publishTime') }}</span>
               <span class="info-value">{{ formatTime(requestItem.createdAt) }}</span>
             </div>
             <div class="info-row">
-              <span class="info-label">交易地点：</span>
+              <span class="info-label">{{ $t('request.detail.location') }}</span>
               <span class="info-value">{{ requestItem.location }}</span>
             </div>
             <div class="info-row">
-              <span class="info-label">求购状态：</span>
+              <span class="info-label">{{ $t('request.detail.status') }}</span>
               <span class="info-value status-badge" :class="getStatusClass(requestItem.status)">
                 {{ getStatusText(requestItem.status) }}
               </span>
             </div>
             <div class="info-row">
-              <span class="info-label">浏览量：</span>
+              <span class="info-label">{{ $t('request.detail.viewCount') }}</span>
               <span class="info-value">{{ requestItem.viewCount || 0 }}</span>
             </div>
           </div>
 
           <!-- 商品标签 -->
           <div class="tags-container" v-if="requestItem.tags && requestItem.tags.length > 0">
-            <span class="tags-label">相关标签：</span>
+            <span class="tags-label">{{ $t('request.detail.relatedTags') }}</span>
             <el-tag
               v-for="tag in requestItem.tags"
               :key="tag"
@@ -59,17 +59,17 @@
 
           <!-- 求购描述 -->
           <div class="request-item-description">
-            <h3>详细描述</h3>
+            <h3>{{ $t('request.detail.description') }}</h3>
             <div class="description-content" v-html="formatDescription(requestItem.description)"></div>
           </div>
 
           <!-- 联系方式 -->
           <div v-if="requestItem.status === 'active'" class="contact-section">
-            <h3>联系方式</h3>
+            <h3>{{ $t('request.detail.contactInfo') }}</h3>
             <div class="contact-info">
-              <p class="contact-hint">为了保护您的隐私，点击下方按钮查看卖家联系方式</p>
+              <p class="contact-hint">{{ $t('request.detail.contactHint') }}</p>
               <el-button type="primary" icon="el-icon-phone" @click="showContactInfo">
-                查看联系方式
+                {{ $t('request.detail.viewContact') }}
               </el-button>
             </div>
           </div>
@@ -77,27 +77,27 @@
           <!-- 状态提示 -->
           <div v-else-if="requestItem.status === 'completed'" class="status-notice completed">
             <i class="el-icon-success"></i>
-            <span>此求购信息已完成，感谢您的关注</span>
+            <span>{{ $t('request.detail.completedNotice') }}</span>
           </div>
-          
+
           <div v-else-if="requestItem.status === 'cancelled'" class="status-notice cancelled">
             <i class="el-icon-error"></i>
-            <span>此求购信息已取消</span>
+            <span>{{ $t('request.detail.cancelledNotice') }}</span>
           </div>
 
           <!-- 操作按钮 -->
           <div class="action-buttons" v-if="isOwner">
-            <el-button type="primary" @click="editRequestItem">编辑求购</el-button>
-            <el-button type="success" v-if="requestItem.status === 'active'" @click="markAsCompleted">标记完成</el-button>
-            <el-button type="danger" v-if="requestItem.status === 'active'" @click="cancelRequestItem">取消求购</el-button>
+            <el-button type="primary" @click="editRequestItem">{{ $t('request.detail.editRequest') }}</el-button>
+            <el-button type="success" v-if="requestItem.status === 'active'" @click="markAsCompleted">{{ $t('request.detail.markComplete') }}</el-button>
+            <el-button type="danger" v-if="requestItem.status === 'active'" @click="cancelRequestItem">{{ $t('request.detail.cancelRequest') }}</el-button>
           </div>
         </el-card>
 
         <!-- 评论区域 -->
         <el-card class="comments-section" v-if="requestItem.status !== 'cancelled'">
           <div class="comments-header">
-            <h3>评论区</h3>
-            <span class="comment-count">({{ comments.length }}条评论)</span>
+            <h3>{{ $t('request.detail.commentsSection') }}</h3>
+            <span class="comment-count">({{ comments.length }}{{ $t('request.detail.commentsCount') }})</span>
           </div>
 
           <!-- 评论输入 -->
@@ -105,20 +105,20 @@
             <el-input
               v-model="commentContent"
               type="textarea"
-              placeholder="写下您的评论或提供相关信息..."
+              :placeholder="$t('request.detail.commentPlaceholder')"
               :rows="3"
               maxlength="500"
               show-word-limit
             >
               <template #append>
-                <el-button type="primary" @click="submitComment">发表评论</el-button>
+                <el-button type="primary" @click="submitComment">{{ $t('request.detail.submitComment') }}</el-button>
               </template>
             </el-input>
           </div>
 
           <!-- 未登录提示 -->
           <div v-else class="login-tip">
-            <p>请先<a href="/login" class="login-link">登录</a>后发表评论</p>
+            <p>{{ $t('request.detail.loginHint1') }}<a href="/login" class="login-link">{{ $t('request.detail.loginLink') }}</a>{{ $t('request.detail.loginHint2') }}</p>
           </div>
 
           <!-- 评论列表 -->
@@ -128,15 +128,15 @@
                 <img
                   v-if="comment.avatar"
                   :src="comment.avatar"
-                  alt="用户头像"
+                  :alt="$t('request.detail.userAvatar')"
                   class="user-avatar"
                 />
-                <div v-else class="user-avatar placeholder">{{ comment.userName?.substring(0, 2) || '用户' }}</div>
+                <div v-else class="user-avatar placeholder">{{ comment.userName?.substring(0, 2) || $t('request.detail.user') }}</div>
                 <div class="comment-info">
-                  <div class="user-name">{{ comment.userName || '匿名用户' }}</div>
+                  <div class="user-name">{{ comment.userName || $t('request.detail.anonymousUser') }}</div>
                   <div class="comment-time">{{ formatTime(comment.createdAt) }}</div>
                 </div>
-                <div v-if="comment.isOwner" class="owner-badge">发布者</div>
+                <div v-if="comment.isOwner" class="owner-badge">{{ $t('request.detail.publisher') }}</div>
               </div>
               <div class="comment-content">{{ comment.content }}</div>
               <div class="comment-actions">
@@ -144,19 +144,19 @@
                   <i class="el-icon-like" :class="{ liked: isLiked(comment.id) }"></i>
                   <span>{{ comment.likeCount || 0 }}</span>
                 </el-button>
-                <el-button type="text" size="small" @click="replyComment(comment.id)">回复</el-button>
+                <el-button type="text" size="small" @click="replyComment(comment.id)">{{ $t('request.detail.reply') }}</el-button>
               </div>
             </div>
           </div>
 
           <!-- 无评论提示 -->
           <div v-else class="no-comments">
-            <p>暂无评论，来发表第一条评论吧</p>
+            <p>{{ $t('request.detail.noComments') }}</p>
           </div>
 
           <!-- 加载更多 -->
           <div v-if="hasMoreComments" class="load-more">
-            <el-button type="text" @click="loadMoreComments">加载更多评论</el-button>
+            <el-button type="text" @click="loadMoreComments">{{ $t('request.detail.loadMoreComments') }}</el-button>
           </div>
         </el-card>
       </div>
@@ -169,38 +169,38 @@
             <img
               v-if="requestItem.userAvatar"
               :src="requestItem.userAvatar"
-              alt="用户头像"
+              :alt="$t('request.detail.userAvatar')"
               class="publisher-avatar"
             />
-            <div v-else class="publisher-avatar placeholder">{{ requestItem.userName?.substring(0, 2) || '用户' }}</div>
+            <div v-else class="publisher-avatar placeholder">{{ requestItem.userName?.substring(0, 2) || $t('request.detail.user') }}</div>
             <div class="publisher-details">
-              <div class="publisher-name">{{ requestItem.userName || '匿名用户' }}</div>
-              <div class="publisher-level">信誉等级：{{ getReputationLevel(requestItem.userReputation || 0) }}</div>
+              <div class="publisher-name">{{ requestItem.userName || $t('request.detail.anonymousUser') }}</div>
+              <div class="publisher-level">{{ $t('request.detail.reputationLevel') }}{{ getReputationLevel(requestItem.userReputation || 0) }}</div>
             </div>
           </div>
           <div class="publisher-stats">
             <div class="stat-item">
-              <span class="stat-label">发布求购</span>
+              <span class="stat-label">{{ $t('request.detail.publishedRequests') }}</span>
               <span class="stat-value">{{ requestItem.userRequestCount || 0 }}</span>
             </div>
             <div class="stat-item">
-              <span class="stat-label">已完成</span>
+              <span class="stat-label">{{ $t('request.detail.completed') }}</span>
               <span class="stat-value">{{ requestItem.userCompletedCount || 0 }}</span>
             </div>
             <div class="stat-item">
-              <span class="stat-label">好评率</span>
+              <span class="stat-label">{{ $t('request.detail.positiveRate') }}</span>
               <span class="stat-value">{{ requestItem.userRating || 100 }}%</span>
             </div>
           </div>
           <div v-if="!isOwner && requestItem.status === 'active'" class="publisher-actions">
-            <el-button type="primary" full-width @click="sendMessage">发送消息</el-button>
-            <el-button type="default" full-width @click="showContactInfo">查看联系方式</el-button>
+            <el-button type="primary" full-width @click="sendMessage">{{ $t('request.detail.sendMessage') }}</el-button>
+            <el-button type="default" full-width @click="showContactInfo">{{ $t('request.detail.viewContact') }}</el-button>
           </div>
         </el-card>
 
         <!-- 相关推荐 -->
         <el-card class="related-requests">
-          <h3 class="card-title">相关求购</h3>
+          <h3 class="card-title">{{ $t('request.detail.relatedRequests') }}</h3>
           <div class="related-list">
             <div
               v-for="item in relatedRequests"
@@ -216,40 +216,40 @@
             </div>
           </div>
           <div class="view-more">
-            <el-button type="text" @click="viewMoreRelated">查看更多</el-button>
+            <el-button type="text" @click="viewMoreRelated">{{ $t('request.detail.viewMore') }}</el-button>
           </div>
         </el-card>
 
         <!-- 平台提示 -->
         <el-card class="platform-tips">
-          <h3 class="card-title">交易安全提示</h3>
+          <h3 class="card-title">{{ $t('request.detail.safetyTips') }}</h3>
           <ul class="tips-list">
-            <li>建议选择校园内公开场所进行交易</li>
-            <li>请勿提前支付定金或全款</li>
-            <li>仔细检查商品质量后再完成交易</li>
-            <li>如遇可疑情况，请及时联系客服</li>
+            <li>{{ $t('request.detail.tip1') }}</li>
+            <li>{{ $t('request.detail.tip2') }}</li>
+            <li>{{ $t('request.detail.tip3') }}</li>
+            <li>{{ $t('request.detail.tip4') }}</li>
           </ul>
         </el-card>
       </div>
     </div>
 
     <!-- 举报弹窗 -->
-    <el-dialog v-model="reportDialogVisible" title="举报该求购信息" width="500px">
+    <el-dialog v-model="reportDialogVisible" :title="$t('request.detail.reportDialogTitle')" width="500px">
       <div class="report-form">
         <el-form :model="reportForm" :rules="reportRules" ref="reportFormRef">
-          <el-form-item label="举报类型" prop="type">
-            <el-select v-model="reportForm.type" placeholder="请选择举报类型">
-              <el-option label="虚假信息" value="fake"></el-option>
-              <el-option label="违禁内容" value="prohibited"></el-option>
-              <el-option label="骚扰信息" value="harassment"></el-option>
-              <el-option label="其他问题" value="other"></el-option>
+          <el-form-item :label="$t('request.detail.reportType')" prop="type">
+            <el-select v-model="reportForm.type" :placeholder="$t('request.detail.selectReportType')">
+              <el-option :label="$t('request.detail.reportFake')" value="fake"></el-option>
+              <el-option :label="$t('request.detail.reportProhibited')" value="prohibited"></el-option>
+              <el-option :label="$t('request.detail.reportHarassment')" value="harassment"></el-option>
+              <el-option :label="$t('request.detail.reportOther')" value="other"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="详细说明" prop="description">
+          <el-form-item :label="$t('request.detail.reportDescription')" prop="description">
             <el-input
               v-model="reportForm.description"
               type="textarea"
-              placeholder="请详细描述您遇到的问题"
+              :placeholder="$t('request.detail.reportDescPlaceholder')"
               :rows="4"
               maxlength="500"
               show-word-limit
@@ -258,33 +258,33 @@
         </el-form>
       </div>
       <template #footer>
-        <el-button @click="reportDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="submitReport">提交举报</el-button>
+        <el-button @click="reportDialogVisible = false">{{ $t('common.cancel') }}</el-button>
+        <el-button type="primary" @click="submitReport">{{ $t('request.detail.submitReport') }}</el-button>
       </template>
     </el-dialog>
 
     <!-- 联系方式弹窗 -->
-    <el-dialog v-model="contactDialogVisible" title="联系方式" width="400px" :show-close="false">
+    <el-dialog v-model="contactDialogVisible" :title="$t('request.detail.contactDialogTitle')" width="400px" :show-close="false">
       <div class="contact-dialog-content" v-if="contactInfo">
         <div class="contact-item">
-          <span class="contact-label">手机号码：</span>
-          <span class="contact-value">{{ contactInfo.phoneNumber || '未设置' }}</span>
+          <span class="contact-label">{{ $t('request.detail.phoneNumber') }}</span>
+          <span class="contact-value">{{ contactInfo.phoneNumber || $t('request.detail.notSet') }}</span>
         </div>
         <div class="contact-item">
-          <span class="contact-label">微信：</span>
-          <span class="contact-value">{{ contactInfo.wechat || '未设置' }}</span>
+          <span class="contact-label">{{ $t('request.detail.wechat') }}</span>
+          <span class="contact-value">{{ contactInfo.wechat || $t('request.detail.notSet') }}</span>
         </div>
         <div class="contact-item">
-          <span class="contact-label">QQ：</span>
-          <span class="contact-value">{{ contactInfo.qq || '未设置' }}</span>
+          <span class="contact-label">{{ $t('request.detail.qq') }}</span>
+          <span class="contact-value">{{ contactInfo.qq || $t('request.detail.notSet') }}</span>
         </div>
         <div class="contact-tip">
           <i class="el-icon-warning"></i>
-          <span>请保护个人信息安全，谨防诈骗</span>
+          <span>{{ $t('request.detail.contactSafetyTip') }}</span>
         </div>
       </div>
       <template #footer>
-        <el-button @click="contactDialogVisible = false">关闭</el-button>
+        <el-button @click="contactDialogVisible = false">{{ $t('common.close') }}</el-button>
       </template>
     </el-dialog>
   </div>
@@ -294,26 +294,27 @@
 import { ref, reactive, onMounted, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { ElMessage } from 'element-plus';
-import { 
-  getRequestItemDetail, 
-  getRequestItemComments, 
-  submitRequestItemComment, 
+import { useI18n } from 'vue-i18n';
+import {
+  getRequestItemDetail,
+  getRequestItemComments,
+  submitRequestItemComment,
   likeRequestItemComment,
   getRelatedRequestItems,
   reportRequestItem,
   getContactInfo
 } from '@/api/requestItem';
-import { 
-  formatPrice, 
-  formatTime, 
-  truncateText, 
+import {
+  formatPrice,
+  formatTime,
+  truncateText,
   formatDescription,
-  getCategoryName,
-  getStatusText,
   getStatusClass,
   getReputationLevel
 } from '@/utils/common';
 import { useUserStore } from '@/store/user';
+
+const { t } = useI18n();
 
 // 路由和状态管理
 const router = useRouter();
@@ -349,15 +350,15 @@ const reportForm = reactive({
 });
 
 // 举报表单验证规则
-const reportRules = reactive({
+const reportRules = computed(() => ({
   type: [
-    { required: true, message: '请选择举报类型', trigger: 'change' }
+    { required: true, message: t('request.detail.reportTypeRequired'), trigger: 'change' }
   ],
   description: [
-    { required: true, message: '请详细说明问题', trigger: 'blur' },
-    { min: 10, max: 500, message: '详细说明长度在 10 到 500 个字符', trigger: 'blur' }
+    { required: true, message: t('request.detail.reportDescRequired'), trigger: 'blur' },
+    { min: 10, max: 500, message: t('request.detail.reportDescLength'), trigger: 'blur' }
   ]
-});
+}));
 
 // 联系方式信息
 const contactInfo = ref<any>(null);
@@ -367,10 +368,33 @@ const likedComments = ref<Set<string>>(new Set());
 
 // 面包屑导航
 const breadcrumbItems = computed(() => [
-  { path: '/', title: '首页' },
-  { path: '/request-items', title: '求购信息' },
-  { title: requestItem.value.title || '求购详情' }
+  { path: '/', title: t('common.home') },
+  { path: '/request-items', title: t('request.detail.breadcrumbRequests') },
+  { title: requestItem.value.title || t('request.detail.breadcrumbDetail') }
 ]);
+
+// 获取分类名称
+const getCategoryName = (category: string) => {
+  const categoryMap: Record<string, string> = {
+    digital: t('item.categories.digital'),
+    textbook: t('item.categories.textbook'),
+    home: t('item.categories.home'),
+    sports: t('item.categories.sports'),
+    clothing: t('item.categories.clothing'),
+    others: t('item.categories.others')
+  };
+  return categoryMap[category] || t('request.list.unknownCategory');
+};
+
+// 获取状态文本
+const getStatusText = (status: string) => {
+  const statusMap: Record<string, string> = {
+    active: t('request.list.statusActive'),
+    completed: t('request.list.statusCompleted'),
+    cancelled: t('request.list.statusCancelled')
+  };
+  return statusMap[status] || t('request.list.unknownStatus');
+};
 
 // 判断是否为求购者本人
   const isOwner = computed(() => {
@@ -389,7 +413,7 @@ const loadRequestItemDetail = async () => {
     requestItem.value = response.data || {};
   } catch (error) {
     console.error('Failed to load request item detail:', error);
-    ElMessage.error('加载求购信息失败，请稍后重试');
+    ElMessage.error(t('request.detail.loadFailed'));
   }
 };
 
@@ -409,7 +433,7 @@ const loadComments = async (page: number = 1) => {
     currentCommentPage.value = page;
   } catch (error) {
     console.error('Failed to load comments:', error);
-    ElMessage.error('加载评论失败，请稍后重试');
+    ElMessage.error(t('request.detail.loadCommentsFailed'));
   }
 };
 
@@ -427,30 +451,30 @@ const loadRelatedRequests = async () => {
 // 提交评论
 const submitComment = async () => {
   if (!commentContent.value.trim()) {
-    ElMessage.warning('评论内容不能为空');
+    ElMessage.warning(t('request.detail.commentEmpty'));
     return;
   }
   
   if (!userStore.isLoggedIn) {
-    ElMessage.warning('请先登录后发表评论');
+    ElMessage.warning(t('request.detail.loginToComment'));
     return;
   }
   
   try {
     await submitRequestItemComment(requestItemId, { content: commentContent.value.trim() });
-    ElMessage.success('评论发表成功');
+    ElMessage.success(t('request.detail.commentSuccess'));
     commentContent.value = '';
     loadComments(1); // 重新加载评论列表
   } catch (error) {
     console.error('Failed to submit comment:', error);
-    ElMessage.error('评论发表失败，请稍后重试');
+    ElMessage.error(t('request.detail.commentFailed'));
   }
 };
 
 // 点赞评论
 const likeComment = async (commentId: string) => {
   if (!userStore.isLoggedIn) {
-    ElMessage.warning('请先登录后点赞');
+    ElMessage.warning(t('request.detail.loginToLike'));
     return;
   }
   
@@ -475,7 +499,7 @@ const likeComment = async (commentId: string) => {
     }
   } catch (error) {
     console.error('Failed to like comment:', error);
-    ElMessage.error('点赞失败，请稍后重试');
+    ElMessage.error(t('request.detail.likeFailed'));
   }
 };
 
@@ -488,7 +512,7 @@ const isLiked = (commentId: string) => {
 const replyComment = (commentId: string) => {
   const comment = comments.value.find(c => c.id === commentId);
   if (comment) {
-    commentContent.value = `回复 @${comment.userName || '用户'}：`;
+    commentContent.value = `${t('request.detail.replyTo')} @${comment.userName || t('request.detail.user')}${t('request.detail.colon')}`;
     // 滚动到评论输入框
     setTimeout(() => {
       const inputElement = document.querySelector('.comment-input-section textarea');
@@ -513,7 +537,7 @@ const submitReport = async () => {
   try {
     await reportFormRef.value.validate();
     await reportRequestItem(requestItemId, reportForm);
-    ElMessage.success('举报已提交，感谢您的反馈');
+    ElMessage.success(t('request.detail.reportSuccess'));
     reportDialogVisible.value = false;
     // 重置表单
     reportForm.type = '';
@@ -521,7 +545,7 @@ const submitReport = async () => {
   } catch (error: any) {
     console.error('Failed to submit report:', error);
     if (error.name !== 'validate') {
-      ElMessage.error('举报提交失败，请稍后重试');
+      ElMessage.error(t('request.detail.reportFailed'));
     }
   }
 };
@@ -529,7 +553,7 @@ const submitReport = async () => {
 // 显示联系方式
 const showContactInfo = async () => {
   if (!userStore.isLoggedIn) {
-    ElMessage.warning('请先登录后查看联系方式');
+    ElMessage.warning(t('request.detail.loginToViewContact'));
     return;
   }
   
@@ -539,19 +563,19 @@ const showContactInfo = async () => {
     contactDialogVisible.value = true;
   } catch (error) {
     console.error('Failed to get contact info:', error);
-    ElMessage.error('获取联系方式失败，请稍后重试');
+    ElMessage.error(t('request.detail.getContactFailed'));
   }
 };
 
 // 发送消息
 const sendMessage = () => {
   if (!userStore.isLoggedIn) {
-    ElMessage.warning('请先登录后发送消息');
+    ElMessage.warning(t('request.detail.loginToSendMessage'));
     return;
   }
   
   // 这里可以跳转到消息页面或打开消息对话框
-  ElMessage.info('消息功能开发中');
+  ElMessage.info(t('request.detail.messageFunctionDev'));
 };
 
 // 编辑求购
@@ -561,13 +585,13 @@ const editRequestItem = () => {
 
 // 标记完成
 const markAsCompleted = async () => {
-  ElMessage.info('标记完成功能开发中');
+  ElMessage.info(t('request.detail.markCompleteFunctionDev'));
   // 实际实现中需要调用API更新求购状态
 };
 
 // 取消求购
 const cancelRequestItem = async () => {
-  ElMessage.info('取消求购功能开发中');
+  ElMessage.info(t('request.detail.cancelFunctionDev'));
   // 实际实现中需要调用API更新求购状态
 };
 

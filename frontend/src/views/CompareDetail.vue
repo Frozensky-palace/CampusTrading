@@ -3,8 +3,8 @@
     <!-- 面包屑导航 -->
     <div class="breadcrumb-section">
       <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ path: '/compare-tasks' }">比价任务</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/' }">{{ $t('compare.detail.breadcrumbHome') }}</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/compare-tasks' }">{{ $t('compare.detail.breadcrumbList') }}</el-breadcrumb-item>
         <el-breadcrumb-item>{{ compareTask?.title }}</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
@@ -25,7 +25,7 @@
         <div class="content-left">
           <!-- 任务描述 -->
           <div class="task-description">
-            <h3>任务描述</h3>
+            <h3>{{ $t('compare.detail.taskDescription') }}</h3>
             <div class="description-content">
               {{ compareTask.description }}
             </div>
@@ -33,7 +33,7 @@
 
           <!-- 任务要求 -->
           <div class="task-requirements" v-if="compareTask.requirements && compareTask.requirements.length > 0">
-            <h3>具体要求</h3>
+            <h3>{{ $t('compare.detail.taskRequirements') }}</h3>
             <ul class="requirements-list">
               <li v-for="(req, index) in compareTask.requirements" :key="index">
                 <i class="el-icon-check"></i> {{ req }}
@@ -59,34 +59,34 @@
           <!-- 任务信息卡片 -->
           <div class="info-card">
             <div class="info-item">
-              <span class="info-label">预算价格</span>
+              <span class="info-label">{{ $t('compare.detail.budgetPrice') }}</span>
               <span class="info-value price">{{ formatPrice(compareTask.budget) }}</span>
             </div>
             <div class="info-item">
-              <span class="info-label">期望新旧</span>
+              <span class="info-label">{{ $t('compare.detail.expectedCondition') }}</span>
               <span class="info-value">{{ getConditionText(compareTask.condition) }}</span>
             </div>
             <div class="info-item">
-              <span class="info-label">交易地点</span>
+              <span class="info-label">{{ $t('compare.detail.tradeLocation') }}</span>
               <span class="info-value">{{ compareTask.location }}</span>
             </div>
             <div class="info-item">
-              <span class="info-label">交易方式</span>
+              <span class="info-label">{{ $t('compare.detail.tradeMethod') }}</span>
               <span class="info-value">{{ getTradeMethodText(compareTask.tradeMethod) }}</span>
             </div>
             <div class="info-item">
-              <span class="info-label">发布时间</span>
+              <span class="info-label">{{ $t('compare.detail.publishTime') }}</span>
               <span class="info-value">{{ formatTime(compareTask.createdAt) }}</span>
             </div>
             <div class="info-item">
-              <span class="info-label">截止时间</span>
+              <span class="info-label">{{ $t('compare.detail.deadline') }}</span>
               <span class="info-value deadline" :class="{ 'expired': isDeadlineExpired }">
                 {{ formatTime(compareTask.deadline) }}
-                <span v-if="isDeadlineExpired" class="expired-tag">（已过期）</span>
+                <span v-if="isDeadlineExpired" class="expired-tag">{{ $t('compare.detail.expired') }}</span>
               </span>
             </div>
             <div class="info-item">
-              <span class="info-label">查看次数</span>
+              <span class="info-label">{{ $t('compare.detail.viewCount') }}</span>
               <span class="info-value">{{ compareTask.viewCount || 0 }}</span>
             </div>
           </div>
@@ -100,7 +100,7 @@
               class="quote-button"
               @click="showQuoteDialog"
             >
-              提交报价
+              {{ $t('compare.detail.submitQuote') }}
             </el-button>
             <el-button
               v-if="compareTask.status === 'active' && isTaskCreator"
@@ -108,7 +108,7 @@
               size="large"
               @click="closeTask"
             >
-              结束比价
+              {{ $t('compare.detail.endCompare') }}
             </el-button>
             <el-button
               v-if="compareTask.status === 'active' && isTaskCreator"
@@ -116,14 +116,14 @@
               size="large"
               @click="cancelTask"
             >
-              取消任务
+              {{ $t('compare.detail.cancelTask') }}
             </el-button>
           </div>
 
           <!-- 未登录提示 -->
           <div class="login-prompt" v-else>
             <el-button type="primary" size="large" @click="redirectToLogin">
-              登录后操作
+              {{ $t('compare.detail.loginToOperate') }}
             </el-button>
           </div>
         </div>
@@ -132,7 +132,7 @@
 
     <!-- 加载中 -->
     <div v-else class="loading-container">
-      <el-loading v-loading="true" element-loading-text="正在加载任务详情...">
+      <el-loading v-loading="true" :element-loading-text="$t('compare.detail.loading')">
         <div style="height: 400px;"></div>
       </el-loading>
     </div>
@@ -140,9 +140,9 @@
     <!-- 报价区域 -->
     <div class="quotes-section" v-if="compareTask">
       <div class="section-header">
-        <h2>报价列表 <span class="quote-count">({{ quotes.length }} 个)</span></h2>
+        <h2>{{ $t('compare.detail.quoteList') }} <span class="quote-count">{{ $t('compare.detail.quoteCountLabel', { count: quotes.length }) }}</span></h2>
         <el-button type="text" @click="sortQuotes" class="sort-button">
-          <i class="el-icon-sort"></i> 价格排序
+          <i class="el-icon-sort"></i> {{ $t('compare.detail.sortByPrice') }}
         </el-button>
       </div>
 
@@ -158,12 +158,12 @@
             <div class="quote-content">
               <div class="quote-header">
                 <div class="quote-price">
-                  <span class="price-label">报价</span>
+                  <span class="price-label">{{ $t('compare.detail.quoteLabel') }}</span>
                   <span class="price-value">{{ formatPrice(quote.price) }}</span>
                 </div>
                 <div class="quote-meta">
                   <span class="quote-time">{{ formatTime(quote.createdAt) }}</span>
-                  <span v-if="quote.selected" class="selected-badge">已选中</span>
+                  <span v-if="quote.selected" class="selected-badge">{{ $t('compare.detail.selected') }}</span>
                 </div>
               </div>
 
@@ -174,11 +174,11 @@
               <div class="quote-footer">
                 <!-- 卖家信息 -->
                 <div class="seller-info">
-                  <img :src="quote.userAvatar || defaultAvatar" alt="用户头像" class="seller-avatar">
+                  <img :src="quote.userAvatar || defaultAvatar" :alt="$t('compare.detail.userAvatar')" class="seller-avatar">
                   <div class="seller-details">
                     <div class="seller-name">{{ quote.userName }}</div>
                     <div class="seller-rating">
-                      <span>信誉评分：{{ quote.userRating || 0 }}</span>
+                      <span>{{ $t('compare.detail.creditScore') }}{{ quote.userRating || 0 }}</span>
                       <el-rate v-model="quote.userRating" :max="5" :disabled="true" show-score />
                     </div>
                   </div>
@@ -187,17 +187,17 @@
                 <!-- 操作按钮 -->
                 <div class="quote-actions">
                   <el-button type="text" @click="viewSellerProfile(quote.userId)">
-                    <i class="el-icon-user"></i> 查看卖家
+                    <i class="el-icon-user"></i> {{ $t('compare.detail.viewSeller') }}
                   </el-button>
                   <el-button type="primary" @click="contactSeller(quote.userId, quote.id)">
-                    <i class="el-icon-chat-dot-round"></i> 联系卖家
+                    <i class="el-icon-chat-dot-round"></i> {{ $t('compare.detail.contactSeller') }}
                   </el-button>
                   <el-button
                     v-if="isTaskCreator && !quote.selected && compareTask.status === 'active'"
                     type="success"
                     @click="selectQuote(quote.id)"
                   >
-                    选择此报价
+                    {{ $t('compare.detail.selectThisQuote') }}
                   </el-button>
                 </div>
               </div>
@@ -210,9 +210,9 @@
           <div class="no-quotes-icon">
             <i class="el-icon-comment"></i>
           </div>
-          <p class="no-quotes-text">暂无报价</p>
-          <p class="no-quotes-hint" v-if="!isTaskCreator">快来提交第一个报价吧！</p>
-          <p class="no-quotes-hint" v-else>等待其他用户的报价...</p>
+          <p class="no-quotes-text">{{ $t('compare.detail.noQuotes') }}</p>
+          <p class="no-quotes-hint" v-if="!isTaskCreator">{{ $t('compare.detail.noQuotesHintOther') }}</p>
+          <p class="no-quotes-hint" v-else>{{ $t('compare.detail.noQuotesHintOwner') }}</p>
         </div>
       </div>
     </div>
@@ -220,7 +220,7 @@
     <!-- 评论区域 -->
     <div class="comments-section" v-if="compareTask">
       <div class="section-header">
-        <h2>评论讨论 <span class="comment-count">({{ comments.length }} 条)</span></h2>
+        <h2>{{ $t('compare.detail.commentsSection') }} <span class="comment-count">{{ $t('compare.detail.commentsCount', { count: comments.length }) }}</span></h2>
       </div>
 
       <!-- 评论列表 -->
@@ -249,7 +249,7 @@
                 </el-button>
                 <el-button type="text" @click="replyComment">
                   <i class="el-icon-chat-line-round"></i>
-                  回复
+                  {{ $t('compare.detail.reply') }}
                 </el-button>
               </div>
             </div>
@@ -258,7 +258,7 @@
 
         <!-- 无评论 -->
         <div v-else class="no-comments">
-          <p>暂无评论，来发表第一条评论吧！</p>
+          <p>{{ $t('compare.detail.noComments') }}</p>
         </div>
 
         <!-- 发表评论 -->
@@ -266,21 +266,21 @@
           <el-input
             v-model="newComment"
             type="textarea"
-            placeholder="写下你的评论..."
+            :placeholder="$t('compare.detail.commentPlaceholder')"
             :rows="3"
             maxlength="500"
             show-word-limit
           ></el-input>
           <div class="comment-form-actions">
-            <el-button @click="cancelComment">取消</el-button>
-            <el-button type="primary" @click="submitComment">提交评论</el-button>
+            <el-button @click="cancelComment">{{ $t('common.cancel') }}</el-button>
+            <el-button type="primary" @click="submitComment">{{ $t('compare.detail.submitComment') }}</el-button>
           </div>
         </div>
 
         <!-- 登录提示 -->
         <div class="login-prompt" v-else>
           <el-button type="primary" @click="redirectToLogin">
-            登录后评论
+            {{ $t('compare.detail.loginToComment') }}
           </el-button>
         </div>
       </div>
@@ -289,7 +289,7 @@
     <!-- 相关推荐 -->
     <div class="related-section" v-if="relatedTasks.length > 0">
       <div class="section-header">
-        <h2>相关比价任务</h2>
+        <h2>{{ $t('compare.detail.relatedTasks') }}</h2>
       </div>
       <div class="related-tasks">
         <el-card
@@ -304,7 +304,7 @@
             <div class="related-task-meta">
               <span class="related-price">￥{{ formatPrice(task.budget) }}</span>
               <span class="related-category">{{ getCategoryName(task.category) }}</span>
-              <span class="related-quote-count">{{ task.quoteCount || 0 }}个报价</span>
+              <span class="related-quote-count">{{ $t('compare.list.quoteCount', { count: task.quoteCount || 0 }) }}</span>
             </div>
           </div>
         </el-card>
@@ -314,35 +314,35 @@
     <!-- 提交报价对话框 -->
     <el-dialog
       v-model="quoteDialogVisible"
-      title="提交报价"
+      :title="$t('compare.detail.quoteDialogTitle')"
       width="600px"
       :before-close="handleQuoteDialogClose"
     >
       <div class="quote-dialog-content">
         <div class="quote-form">
           <el-form :model="quoteForm" :rules="quoteRules" ref="quoteFormRef" label-width="80px">
-            <el-form-item label="报价金额" prop="price">
+            <el-form-item :label="$t('compare.detail.quotePrice')" prop="price">
               <el-input
                 v-model.number="quoteForm.price"
-                placeholder="请输入您的报价金额"
+                :placeholder="$t('compare.detail.quotePricePlaceholder')"
                 prefix-icon="el-icon-money"
               ></el-input>
             </el-form-item>
-            <el-form-item label="报价描述" prop="description">
+            <el-form-item :label="$t('compare.detail.quoteDescription')" prop="description">
               <el-input
                 v-model="quoteForm.description"
                 type="textarea"
-                placeholder="请详细描述您的报价包含的内容、商品来源、新旧程度等信息"
+                :placeholder="$t('compare.detail.quoteDescPlaceholder')"
                 :rows="4"
                 maxlength="500"
                 show-word-limit
               ></el-input>
             </el-form-item>
-            <el-form-item label="联系方式">
+            <el-form-item :label="$t('compare.detail.contactMethod')">
               <el-radio-group v-model="quoteForm.contactMethod">
-                <el-radio-button label="站内信">站内信</el-radio-button>
-                <el-radio-button label="手机">手机</el-radio-button>
-                <el-radio-button label="微信">微信</el-radio-button>
+                <el-radio-button label="站内信">{{ $t('compare.detail.internalMessage') }}</el-radio-button>
+                <el-radio-button label="手机">{{ $t('compare.detail.phone') }}</el-radio-button>
+                <el-radio-button label="微信">{{ $t('compare.detail.wechat') }}</el-radio-button>
               </el-radio-group>
             </el-form-item>
           </el-form>
@@ -350,8 +350,8 @@
       </div>
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="handleQuoteDialogClose">取消</el-button>
-          <el-button type="primary" @click="submitQuote">提交报价</el-button>
+          <el-button @click="handleQuoteDialogClose">{{ $t('common.cancel') }}</el-button>
+          <el-button type="primary" @click="submitQuote">{{ $t('compare.detail.submitQuote') }}</el-button>
         </span>
       </template>
     </el-dialog>
@@ -362,16 +362,62 @@
 import { ref, reactive, onMounted, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { ElMessage, ElMessageBox } from 'element-plus';
+import { useI18n } from 'vue-i18n';
 import { getCompareTaskDetail, submitCompareQuote, getCompareQuotes, getCompareComments, submitCompareComment, likeCompareComment } from '@/api/compare';
 import {
   formatPrice,
   formatTime,
-  getCategoryName,
-  getStatusText,
-  getStatusClass,
-  getConditionText,
-  getTradeMethodText
+  getStatusClass
 } from '@/utils/common';
+
+// i18n
+const { t } = useI18n();
+
+// 获取分类名称
+const getCategoryName = (category: string) => {
+  const categoryMap: Record<string, string> = {
+    digital: t('item.categories.digital'),
+    textbook: t('item.categories.textbook'),
+    home: t('item.categories.home'),
+    sports: t('item.categories.sports'),
+    clothing: t('item.categories.clothing'),
+    others: t('item.categories.others')
+  };
+  return categoryMap[category] || category;
+};
+
+// 获取状态文本
+const getStatusText = (status: string) => {
+  const statusMap: Record<string, string> = {
+    active: t('compare.list.statusActive'),
+    completed: t('compare.list.statusCompleted'),
+    cancelled: t('compare.list.statusCancelled')
+  };
+  return statusMap[status] || status;
+};
+
+// 获取成色文本
+const getConditionText = (condition: string) => {
+  const conditionMap: Record<string, string> = {
+    new: t('compare.create.conditionNew'),
+    '全新': t('compare.create.conditionNew'),
+    '9成新': t('compare.create.condition90'),
+    '8成新': t('compare.create.condition80'),
+    '7成新及以下': t('compare.create.condition70'),
+    '不限': t('compare.create.conditionAny')
+  };
+  return conditionMap[condition] || condition;
+};
+
+// 获取交易方式文本
+const getTradeMethodText = (method: string) => {
+  const methodMap: Record<string, string> = {
+    '线下交易': t('compare.create.methodOffline'),
+    '线上交易': t('compare.create.methodOnline'),
+    '不限': t('compare.create.methodAny')
+  };
+  return methodMap[method] || method;
+};
 
 // 路由和参数
 const router = useRouter();
@@ -413,16 +459,16 @@ const quoteForm = reactive({
 });
 
 // 报价表单验证规则
-const quoteRules = {
+const quoteRules = computed(() => ({
   price: [
-    { required: true, message: '请输入报价金额', trigger: 'blur' },
-    { type: 'number', min: 0.01, message: '报价金额必须大于0', trigger: 'blur' }
+    { required: true, message: t('compare.detail.validation.priceRequired'), trigger: 'blur' },
+    { type: 'number', min: 0.01, message: t('compare.detail.validation.priceMin'), trigger: 'blur' }
   ],
   description: [
-    { required: true, message: '请输入报价描述', trigger: 'blur' },
-    { min: 10, message: '描述至少10个字符', trigger: 'blur' }
+    { required: true, message: t('compare.detail.validation.descriptionRequired'), trigger: 'blur' },
+    { min: 10, message: t('compare.detail.validation.descriptionMin'), trigger: 'blur' }
   ]
-};
+}));
 
 // 报价表单引用
 const quoteFormRef = ref<InstanceType<any>>();
@@ -466,7 +512,7 @@ const loadCompareTaskDetail = async () => {
     ]);
   } catch (error) {
     console.error('Failed to load compare task detail:', error);
-    ElMessage.error('加载任务详情失败，请稍后重试');
+    ElMessage.error(t('compare.detail.loadFailed'));
   } finally {
     loading.value = false;
   }
@@ -479,7 +525,7 @@ const loadQuotes = async () => {
     quotes.value = response.data || [];
   } catch (error) {
     console.error('Failed to load quotes:', error);
-    ElMessage.error('加载报价列表失败');
+    ElMessage.error(t('compare.detail.loadQuotesFailed'));
   }
 };
 
@@ -490,7 +536,7 @@ const loadComments = async () => {
     comments.value = response.data || [];
   } catch (error) {
     console.error('Failed to load comments:', error);
-    ElMessage.error('加载评论列表失败');
+    ElMessage.error(t('compare.detail.loadCommentsFailed'));
   }
 };
 
@@ -539,8 +585,8 @@ const submitQuote = async () => {
     };
     
     await submitCompareQuote(compareTask.value.id, quoteData);
-    
-    ElMessage.success('报价提交成功');
+
+    ElMessage.success(t('compare.detail.quoteSuccess'));
     quoteDialogVisible.value = false;
     
     // 重置表单
@@ -550,14 +596,14 @@ const submitQuote = async () => {
     await loadQuotes();
   } catch (error) {
     console.error('Failed to submit quote:', error);
-    ElMessage.error('报价提交失败，请稍后重试');
+    ElMessage.error(t('compare.detail.quoteFailed'));
   }
 };
 
 // 提交评论
 const submitComment = async () => {
   if (!newComment.value.trim()) {
-    ElMessage.warning('请输入评论内容');
+    ElMessage.warning(t('compare.detail.commentEmpty'));
     return;
   }
   
@@ -568,17 +614,17 @@ const submitComment = async () => {
     };
     
     await submitCompareComment(taskId, commentData);
-    
-    ElMessage.success('评论提交成功');
-    
+
+    ElMessage.success(t('compare.detail.commentSuccess'));
+
     // 清空评论框
     newComment.value = '';
-    
+
     // 重新加载评论列表
     await loadComments();
   } catch (error) {
     console.error('Failed to submit comment:', error);
-    ElMessage.error('评论提交失败，请稍后重试');
+    ElMessage.error(t('compare.detail.commentFailed'));
   }
 };
 
@@ -592,11 +638,11 @@ const likeComment = async (commentId: string) => {
     if (comment) {
       comment.likes = (comment.likes || 0) + 1;
     }
-    
-    ElMessage.success('点赞成功');
+
+    ElMessage.success(t('compare.detail.likeSuccess'));
   } catch (error) {
     console.error('Failed to like comment:', error);
-    ElMessage.error('点赞失败，请稍后重试');
+    ElMessage.error(t('compare.detail.likeFailed'));
   }
 };
 
@@ -604,16 +650,16 @@ const likeComment = async (commentId: string) => {
 const selectQuote = async (quoteId: string) => {
   try {
     ElMessageBox.confirm(
-      '确定要选择此报价吗？选择后比价任务将自动完成',
-      '确认选择',
+      t('compare.detail.selectQuoteConfirm'),
+      t('compare.detail.selectQuoteTitle'),
       {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+        confirmButtonText: t('common.confirm'),
+        cancelButtonText: t('common.cancel'),
         type: 'warning'
       }
     ).then(async () => {
       // 实际项目中应调用API选择报价
-      ElMessage.success('报价选择成功');
+      ElMessage.success(t('compare.detail.selectQuoteSuccess'));
       
       // 更新报价状态
       quotes.value.forEach(quote => {
@@ -632,16 +678,16 @@ const selectQuote = async (quoteId: string) => {
 const closeTask = async () => {
   try {
     ElMessageBox.confirm(
-      '确定要结束此比价任务吗？结束后将无法再接收新的报价',
-      '确认结束',
+      t('compare.detail.closeTaskConfirm'),
+      t('compare.detail.closeTaskTitle'),
       {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+        confirmButtonText: t('common.confirm'),
+        cancelButtonText: t('common.cancel'),
         type: 'warning'
       }
     ).then(async () => {
       // 实际项目中应调用API结束任务
-      ElMessage.success('比价任务已结束');
+      ElMessage.success(t('compare.detail.closeTaskSuccess'));
       compareTask.value.status = 'completed';
     });
   } catch (error) {
@@ -653,16 +699,16 @@ const closeTask = async () => {
 const cancelTask = async () => {
   try {
     ElMessageBox.confirm(
-      '确定要取消此比价任务吗？取消后将无法恢复',
-      '确认取消',
+      t('compare.detail.cancelTaskConfirm'),
+      t('compare.detail.cancelTaskTitle'),
       {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+        confirmButtonText: t('common.confirm'),
+        cancelButtonText: t('common.cancel'),
         type: 'error'
       }
     ).then(async () => {
       // 实际项目中应调用API取消任务
-      ElMessage.success('比价任务已取消');
+      ElMessage.success(t('compare.detail.cancelTaskSuccess'));
       compareTask.value.status = 'cancelled';
     });
   } catch (error) {
@@ -683,7 +729,7 @@ const contactSeller = (userId: string, quoteId: string) => {
 // 回复评论
 const replyComment = () => {
   // 实际项目中应实现回复功能
-  ElMessage.info('回复功能待实现');
+  ElMessage.info(t('compare.detail.replyFunctionDev'));
 };
 
 // 排序报价
@@ -699,7 +745,7 @@ const showQuoteDialog = () => {
   }
   
   if (isDeadlineExpired.value) {
-    ElMessage.warning('此任务已过期，无法提交报价');
+    ElMessage.warning(t('compare.detail.taskExpired'));
     return;
   }
   

@@ -1,8 +1,8 @@
 <template>
   <div class="rent-detail-container">
     <el-breadcrumb separator="/" class="breadcrumb">
-      <el-breadcrumb-item><router-link to="/">首页</router-link></el-breadcrumb-item>
-      <el-breadcrumb-item><router-link to="/rent/list">租赁列表</router-link></el-breadcrumb-item>
+      <el-breadcrumb-item><router-link to="/">{{ $t('rent.breadcrumb.home') }}</router-link></el-breadcrumb-item>
+      <el-breadcrumb-item><router-link to="/rent/list">{{ $t('rent.breadcrumb.rentList') }}</router-link></el-breadcrumb-item>
       <el-breadcrumb-item>{{ rentItem.name }}</el-breadcrumb-item>
     </el-breadcrumb>
 
@@ -12,11 +12,11 @@
       <div class="item-images">
         <img :src="rentItem.image" :alt="rentItem.name" class="main-image">
         <div class="thumbnails">
-          <img 
-            v-for="(thumb, index) in rentItem.images" 
+          <img
+            v-for="(thumb, index) in rentItem.images"
             :key="index"
-            :src="thumb" 
-            :alt="rentItem.name + ' 缩略图'"
+            :src="thumb"
+            :alt="rentItem.name"
             class="thumbnail"
             @click="setMainImage(thumb)"
           >
@@ -30,70 +30,70 @@
           <div class="price">
             <span class="currency">¥</span>
             <span class="price-value">{{ rentItem.rental_price_day }}</span>
-            <span class="price-unit">/天</span>
+            <span class="price-unit">{{ $t('rent.perDay') }}</span>
             <span v-if="rentItem.rental_price_week" class="price-option">
-              ¥{{ rentItem.rental_price_week }}/周
+              ¥{{ rentItem.rental_price_week }}{{ $t('rent.perWeek') }}
             </span>
             <span v-if="rentItem.rental_price_month" class="price-option">
-              ¥{{ rentItem.rental_price_month }}/月
+              ¥{{ rentItem.rental_price_month }}{{ $t('rent.perMonth') }}
             </span>
           </div>
-          <div class="deposit">押金: ¥{{ rentItem.deposit }}</div>
+          <div class="deposit">{{ $t('rent.deposit') }}: ¥{{ rentItem.deposit }}</div>
         </div>
-        
+
         <div class="item-meta">
           <div class="meta-item">
-            <span class="meta-label">分类:</span>
+            <span class="meta-label">{{ $t('rent.category') }}:</span>
             <span class="meta-value">{{ getCategoryName(rentItem.category) }}</span>
           </div>
           <div class="meta-item">
-            <span class="meta-label">位置:</span>
+            <span class="meta-label">{{ $t('rent.location') }}:</span>
             <span class="meta-value">{{ rentItem.location }}</span>
           </div>
           <div class="meta-item">
-            <span class="meta-label">发布时间:</span>
+            <span class="meta-label">{{ $t('rent.publishTime') }}:</span>
             <span class="meta-value">{{ formatDate(rentItem.createTime) }}</span>
           </div>
           <div class="meta-item">
-            <span class="meta-label">状态:</span>
+            <span class="meta-label">{{ $t('rent.status') }}:</span>
             <span :class="['meta-value', rentItem.available ? 'available' : 'unavailable']">
-              {{ rentItem.available ? '可租' : '已租' }}
+              {{ rentItem.available ? $t('rent.available') : $t('rent.rented') }}
             </span>
           </div>
         </div>
 
         <!-- 租赁时间选择 -->
         <div class="rental-time">
-          <div class="time-label">租赁时间</div>
+          <div class="time-label">{{ $t('rent.rentalTime') }}</div>
           <el-date-picker
             v-model="startDate"
             type="date"
-            placeholder="开始日期"
+            :placeholder="$t('rent.startDate')"
             format="YYYY-MM-DD"
             value-format="YYYY-MM-DD"
             class="date-picker"
           />
-          <span class="time-separator">至</span>
+          <span class="time-separator">{{ $t('rent.to') }}</span>
           <el-date-picker
             v-model="endDate"
             type="date"
-            placeholder="结束日期"
+            :placeholder="$t('rent.endDate')"
             format="YYYY-MM-DD"
             value-format="YYYY-MM-DD"
             class="date-picker"
           />
           <div class="rental-days" v-if="startDate && endDate">
-            共 {{ getRentalDays() }} 天，总价: ¥{{ getTotalPrice() }}
+            {{ $t('rent.totalDays', { days: getRentalDays(), price: getTotalPrice() }) }}
           </div>
         </div>
 
         <!-- 操作按钮 -->
         <div class="action-buttons">
           <el-button type="danger" size="large" @click="contactOwner" class="contact-btn">
-            <i class="el-icon-phone"></i> 联系出租人
+            <i class="el-icon-phone"></i> {{ $t('rent.contactOwner') }}
           </el-button>
           <el-button type="primary" size="large" @click="applyForRental" class="rent-btn" :disabled="!rentItem.available || !canApply">
-            {{ rentItem.available ? '立即租赁' : '已被租赁' }}
+            {{ rentItem.available ? $t('rent.rentNow') : $t('rent.alreadyRented') }}
           </el-button>
         </div>
       </div>
@@ -101,51 +101,51 @@
 
     <!-- 物品详细描述 -->
     <div class="item-description">
-      <h2>物品描述</h2>
+      <h2>{{ $t('rent.itemDescription') }}</h2>
       <div class="description-content" v-html="rentItem.description"></div>
     </div>
 
     <!-- 租赁须知 -->
     <div class="rental-notice">
-      <h2>租赁须知</h2>
+      <h2>{{ $t('rent.rentalNotice') }}</h2>
       <ul>
-        <li>请在租赁前确认物品的完好状态</li>
-        <li>请按时归还物品，逾期将收取额外费用</li>
-        <li>租赁期间请妥善保管物品，如有损坏需按价赔偿</li>
-        <li>押金将在物品完好归还后全额退还</li>
-        <li>如需延长租赁时间，请提前与出租人协商</li>
+        <li>{{ $t('rent.notices.checkCondition') }}</li>
+        <li>{{ $t('rent.notices.returnOnTime') }}</li>
+        <li>{{ $t('rent.notices.keepSafe') }}</li>
+        <li>{{ $t('rent.notices.depositReturn') }}</li>
+        <li>{{ $t('rent.notices.extendContact') }}</li>
       </ul>
     </div>
 
     <!-- 出租方信息 -->
     <div class="owner-info">
-      <h2>出租方信息</h2>
+      <h2>{{ $t('rent.ownerInfo') }}</h2>
       <div class="owner-details">
-        <img :src="rentItem.ownerAvatar" alt="出租方头像" class="owner-avatar">
+        <img :src="rentItem.ownerAvatar" :alt="$t('rent.ownerInfo')" class="owner-avatar">
         <div class="owner-meta">
           <div class="owner-name">{{ rentItem.ownerName }}</div>
           <div class="owner-rating">
-            <span class="rating-label">信誉评分:</span>
+            <span class="rating-label">{{ $t('rent.creditScore') }}:</span>
             <el-rate v-model="rentItem.ownerRating" disabled show-score />
           </div>
           <div class="owner-stats">
-            <span>已出租 {{ rentItem.rentalCount }} 次</span>
-            <span>好评率 {{ rentItem.reviewRate }}%</span>
+            <span>{{ $t('rent.rentedTimes', { count: rentItem.rentalCount }) }}</span>
+            <span>{{ $t('rent.positiveRate', { rate: rentItem.reviewRate }) }}</span>
           </div>
         </div>
-        <el-button type="default" class="view-profile-btn">查看个人主页</el-button>
+        <el-button type="default" class="view-profile-btn">{{ $t('rent.viewProfile') }}</el-button>
       </div>
     </div>
 
     <!-- 相关推荐 -->
     <div class="related-items">
-      <h2>相关推荐</h2>
+      <h2>{{ $t('rent.relatedItems') }}</h2>
       <div class="related-grid">
         <div class="related-item" v-for="item in relatedItems" :key="item.id">
           <router-link :to="`/rent/detail/${item.id}`" class="related-link">
             <img :src="item.image" :alt="item.name" class="related-image">
             <div class="related-name">{{ item.name }}</div>
-            <div class="related-price">¥{{ item.rental_price_day }}/天</div>
+            <div class="related-price">¥{{ item.rental_price_day }}{{ $t('rent.perDay') }}</div>
           </router-link>
         </div>
       </div>
@@ -156,9 +156,11 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { getRentItemDetail, applyForRental as applyForRentalAPI } from '@/api/rent';
 import { ElMessage, ElMessageBox } from 'element-plus';
 
+const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 const itemId = ref(Number(route.params.id));
@@ -330,7 +332,7 @@ const loadRentItemDetail = async () => {
     // 加载相关推荐
     relatedItems.value = mockRelatedItems;
   } catch (error) {
-    console.error('加载租赁物品详情失败:', error);
+    console.error(t('rent.loadDetailFailed'), error);
     // 加载失败时使用模拟数据
     rentItem.value = { ...mockRentItemDetail, id: itemId.value || 1 };
     relatedItems.value = mockRelatedItems;
@@ -345,11 +347,11 @@ const setMainImage = (image: string) => {
 // 获取分类名称
 const getCategoryName = (category: string) => {
   const categoryMap: Record<string, string> = {
-    'electronics': '电子产品',
-    'sports': '体育用品',
-    'music': '乐器',
-    'books': '书籍',
-    'other': '其他'
+    'electronics': t('rent.categories.electronics'),
+    'sports': t('rent.categories.sports'),
+    'music': t('rent.categories.music'),
+    'books': t('rent.categories.books'),
+    'other': t('rent.categories.other')
   };
   return categoryMap[category] || category;
 };
@@ -408,25 +410,31 @@ const canApply = computed(() => {
 
 // 联系出租人
 const contactOwner = () => {
-  ElMessage({ 
-    message: `已复制出租人联系方式: ${rentItem.value.ownerName} (虚拟联系方式)`, 
-    type: 'success' 
+  ElMessage({
+    message: `${t('rent.contactCopied')}: ${rentItem.value.ownerName}`,
+    type: 'success'
   });
 };
 
 // 申请租赁
 const applyForRental = () => {
   if (!canApply.value) {
-    ElMessage.warning('请选择有效的租赁时间');
+    ElMessage.warning(t('rent.selectValidTime'));
     return;
   }
-  
+
   ElMessageBox.confirm(
-    `您确定要租赁${rentItem.value.name}，从${startDate.value}至${endDate.value}，共${getRentalDays()}天，押金¥${rentItem.value.deposit}吗？`,
-    '确认租赁',
+    t('rent.confirmRentalMsg', {
+      name: rentItem.value.name,
+      start: startDate.value,
+      end: endDate.value,
+      days: getRentalDays(),
+      deposit: rentItem.value.deposit
+    }),
+    t('rent.confirmRental'),
     {
-      confirmButtonText: '确认',
-      cancelButtonText: '取消',
+      confirmButtonText: t('common.confirm'),
+      cancelButtonText: t('common.cancel'),
       type: 'info'
     }
   ).then(async () => {
@@ -439,17 +447,17 @@ const applyForRental = () => {
         total_amount: getTotalPrice(),
         deposit: rentItem.value.deposit
       });
-      ElMessage.success('租赁申请已提交，请等待出租人确认');
+      ElMessage.success(t('rent.rentalSubmitted'));
       // 跳转到租赁订单页面
       setTimeout(() => {
         router.push('/rent/orders');
       }, 1500);
     } catch (error) {
-      console.error('提交租赁申请失败:', error);
-      ElMessage.error('提交租赁申请失败，请稍后重试');
+      console.error(t('rent.applyFailed'), error);
+      ElMessage.error(t('rent.rentalFailed'));
     }
   }).catch(() => {
-    ElMessage.info('已取消租赁申请');
+    ElMessage.info(t('rent.rentalCancelled'));
   });
 };
 

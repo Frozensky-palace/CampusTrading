@@ -3,8 +3,8 @@
     <!-- 面包屑导航 -->
     <div class="breadcrumb">
       <el-breadcrumb separator="/">
-          <el-breadcrumb-item><router-link to="/">首页</router-link></el-breadcrumb-item>
-          <el-breadcrumb-item><router-link to="/items">商品列表</router-link></el-breadcrumb-item>
+          <el-breadcrumb-item><router-link to="/">{{ $t('item.detail.breadcrumbHome') }}</router-link></el-breadcrumb-item>
+          <el-breadcrumb-item><router-link to="/items">{{ $t('item.detail.breadcrumbList') }}</router-link></el-breadcrumb-item>
           <el-breadcrumb-item :to="`/items?category=${item.category}`">{{ getCategoryName(item.category) }}</el-breadcrumb-item>
           <el-breadcrumb-item>{{ item.name }}</el-breadcrumb-item>
         </el-breadcrumb>
@@ -21,8 +21,8 @@
         />
         <div class="main-image">
           <img :src="item.image" :alt="item.name" @click="showViewer = true" class="image">
-          <span v-if="item.discount" class="discount-badge">{{ item.discount }}折</span>
-          <span v-if="item.status === 'sold'" class="sold-badge">已售出</span>
+          <span v-if="item.discount" class="discount-badge">{{ item.discount }}{{ $t('item.list.discount') }}</span>
+          <span v-if="item.status === 'sold'" class="sold-badge">{{ $t('item.list.soldOut') }}</span>
         </div>
         <div class="image-preview" v-if="imageList.length > 1">
           <div class="preview-item" v-for="(img, index) in imageList" :key="index">
@@ -36,43 +36,43 @@
         <h1 class="item-name">{{ item.name }}</h1>
         <div class="item-rating">
           <el-rate v-model="item.rating" :max="5" disabled show-score score-template="{{ value }}分"></el-rate>
-          <span class="review-count">({{ item.reviewCount }}条评价)</span>
+          <span class="review-count">({{ item.reviewCount }}{{ $t('item.detail.reviews') }})</span>
         </div>
         <div class="item-price-section">
           <div class="price-container">
-            <span class="price-label">价格：</span>
+            <span class="price-label">{{ $t('item.detail.priceLabel') }}</span>
             <span class="price">¥{{ item.price }}</span>
             <span v-if="item.originalPrice" class="original-price">¥{{ item.originalPrice }}</span>
           </div>
           <div class="price-info">
-            <span class="view-count"><i class="el-icon-view"></i>{{ item.views }}次浏览</span>
+            <span class="view-count"><i class="el-icon-view"></i>{{ item.views }}{{ $t('item.detail.viewCount') }}</span>
             <span class="publish-time"><i class="el-icon-clock"></i>{{ formatTime(item.createdAt) }}</span>
           </div>
         </div>
         <div class="item-meta">
           <div class="meta-item">
-            <span class="meta-label">商品状态：</span>
+            <span class="meta-label">{{ $t('item.detail.itemStatus') }}</span>
             <span class="meta-value" :class="getStatusClass(item.status)">{{ getStatusText(item.status) }}</span>
           </div>
           <div class="meta-item">
-            <span class="meta-label">新旧程度：</span>
-            <span class="meta-value">{{ item.condition || '未填写' }}</span>
+            <span class="meta-label">{{ $t('item.detail.itemCondition') }}</span>
+            <span class="meta-value">{{ item.condition || $t('item.detail.notFilled') }}</span>
           </div>
           <div class="meta-item">
-            <span class="meta-label">交易地点：</span>
-            <span class="meta-value">{{ item.location || '未填写' }}</span>
+            <span class="meta-label">{{ $t('item.detail.tradeLocation') }}</span>
+            <span class="meta-value">{{ item.location || $t('item.detail.notFilled') }}</span>
           </div>
           <div class="meta-item">
-            <span class="meta-label">商品标签：</span>
+            <span class="meta-label">{{ $t('item.detail.itemTags') }}</span>
             <div class="tags-container">
               <el-tag v-for="tag in item.tags" :key="tag" size="small" type="info">{{ tag }}</el-tag>
             </div>
           </div>
         </div>
         <div class="action-buttons">
-          <el-button type="primary" size="large" @click="contactSeller" :disabled="item.status === 'sold'">{{ item.status === 'sold' ? '商品已售出' : '联系卖家' }}</el-button>
-          <el-button type="default" size="large" @click="addToFavorite" :icon="isFavorite ? 'el-icon-star-on' : 'el-icon-star-off'">{{ isFavorite ? '已收藏' : '收藏' }}</el-button>
-          <el-button type="default" size="large" @click="shareItem"><i class="el-icon-share"></i>分享</el-button>
+          <el-button type="primary" size="large" @click="contactSeller" :disabled="item.status === 'sold'">{{ item.status === 'sold' ? $t('item.detail.itemSold') : $t('item.contactSeller') }}</el-button>
+          <el-button type="default" size="large" @click="addToFavorite" :icon="isFavorite ? 'el-icon-star-on' : 'el-icon-star-off'">{{ isFavorite ? $t('item.detail.favorited') : $t('item.detail.favorite') }}</el-button>
+          <el-button type="default" size="large" @click="shareItem"><i class="el-icon-share"></i>{{ $t('item.share') }}</el-button>
         </div>
       </div>
     </div>
@@ -81,20 +81,20 @@
     <div class="item-detail-section">
       <div class="detail-tabs">
         <el-tabs v-model="activeTab" @tab-click="handleTabClick">
-          <el-tab-pane label="商品详情" name="detail"></el-tab-pane>
-          <el-tab-pane label="用户评价" name="reviews"></el-tab-pane>
-          <el-tab-pane label="卖家信息" name="seller"></el-tab-pane>
+          <el-tab-pane :label="$t('item.detail.tabDetail')" name="detail"></el-tab-pane>
+          <el-tab-pane :label="$t('item.detail.tabReviews')" name="reviews"></el-tab-pane>
+          <el-tab-pane :label="$t('item.detail.tabSeller')" name="seller"></el-tab-pane>
         </el-tabs>
       </div>
 
       <!-- 商品详情内容 -->
       <div v-if="activeTab === 'detail'" class="detail-content">
         <div class="detail-description">
-          <h3>商品描述</h3>
+          <h3>{{ $t('item.detail.itemDescription') }}</h3>
           <div class="description-content" v-html="item.description"></div>
         </div>
         <div class="detail-specs">
-          <h3>商品规格</h3>
+          <h3>{{ $t('item.detail.itemSpecs') }}</h3>
           <table class="specs-table">
             <tr v-for="(value, key) in item.specs" :key="key">
               <td class="spec-key">{{ key }}</td>
@@ -103,7 +103,7 @@
           </table>
         </div>
         <div class="detail-shipping">
-          <h3>交易方式</h3>
+          <h3>{{ $t('item.detail.tradeMethods') }}</h3>
           <div class="shipping-methods">
             <div class="shipping-item" v-for="method in item.shippingMethods" :key="method">
               <i class="el-icon-check"></i>
@@ -119,11 +119,11 @@
           <div class="rating-overview">
             <div class="overall-score">
               <span class="score">{{ item.rating }}</span>
-              <span class="score-label">综合评分</span>
+              <span class="score-label">{{ $t('item.detail.overallScore') }}</span>
             </div>
             <div class="rating-details">
               <div class="rating-item" v-for="(count, star) in ratingDistribution" :key="star">
-                <span class="star-label">{{ star }}星</span>
+                <span class="star-label">{{ star }}{{ $t('item.detail.stars') }}</span>
                 <el-progress :percentage="count / totalReviews * 100" :show-text="false"></el-progress>
                 <span class="count">{{ count }}</span>
               </div>
@@ -142,12 +142,12 @@
             </div>
             <div class="review-content">{{ review.content }}</div>
             <div class="review-images" v-if="review.images && review.images.length > 0">
-              <img v-for="(img, index) in review.images" :key="index" :src="img" :alt="`评价图片${index+1}`" class="review-image">
+              <img v-for="(img, index) in review.images" :key="index" :src="img" :alt="`Review image ${index+1}`" class="review-image">
             </div>
           </div>
         </div>
         <div v-if="reviews.length === 0" class="no-reviews">
-          <el-empty description="暂无评价" />
+          <el-empty :description="$t('item.detail.noReviews')" />
         </div>
       </div>
 
@@ -158,21 +158,21 @@
           <div class="seller-details">
             <h3 class="seller-name">{{ seller.name }}</h3>
             <div class="seller-stats">
-              <span class="stat-item"><i class="el-icon-goods"></i>在售{{ seller.activeItems }}件</span>
-              <span class="stat-item"><i class="el-icon-success"></i>好评率{{ seller.ratingRate }}%</span>
-              <span class="stat-item"><i class="el-icon-time"></i>注册于{{ formatYear(seller.registeredAt) }}</span>
+              <span class="stat-item"><i class="el-icon-goods"></i>{{ $t('item.detail.sellerOnSale') }}{{ seller.activeItems }}{{ $t('item.detail.sellerItems') }}</span>
+              <span class="stat-item"><i class="el-icon-success"></i>{{ $t('item.detail.sellerPositiveRate') }}{{ seller.ratingRate }}%</span>
+              <span class="stat-item"><i class="el-icon-time"></i>{{ $t('item.detail.registeredAt') }}{{ formatYear(seller.registeredAt) }}</span>
             </div>
             <div class="seller-tags">
               <el-tag v-for="tag in seller.tags" :key="tag" size="small">{{ tag }}</el-tag>
             </div>
           </div>
           <div class="seller-actions">
-            <el-button type="primary" @click="contactSeller">联系卖家</el-button>
-            <el-button type="default" @click="viewSellerProfile">查看店铺</el-button>
+            <el-button type="primary" @click="contactSeller">{{ $t('item.contactSeller') }}</el-button>
+            <el-button type="default" @click="viewSellerProfile">{{ $t('item.detail.viewShop') }}</el-button>
           </div>
         </div>
         <div class="seller-other-items">
-          <h3>卖家其他商品</h3>
+          <h3>{{ $t('item.detail.sellerOtherItems') }}</h3>
           <div class="other-items-list">
             <router-link :to="`/items/${otherItem.id}`" class="other-item" v-for="otherItem in seller.otherItems" :key="otherItem.id">
               <img :src="otherItem.image" :alt="otherItem.name" class="other-item-image">
@@ -181,7 +181,7 @@
             </router-link>
           </div>
           <div v-if="seller.otherItems.length === 0" class="no-other-items">
-            <el-empty description="暂无其他商品" />
+            <el-empty :description="$t('item.detail.noOtherItems')" />
           </div>
         </div>
       </div>
@@ -189,7 +189,7 @@
 
     <!-- 相关推荐 -->
     <div class="recommendations-section">
-      <h3>猜你喜欢</h3>
+      <h3>{{ $t('item.detail.youMayLike') }}</h3>
       <div class="recommendations-list">
         <router-link :to="`/items/${recItem.id}`" class="recommendation-item" v-for="recItem in recommendations" :key="recItem.id">
           <img :src="recItem.image" :alt="recItem.name" class="rec-image">
@@ -203,42 +203,42 @@
     <el-loading v-if="loading" :target="'.item-detail-container'" fullscreen />
 
     <!-- 联系卖家弹窗 -->
-    <el-dialog v-model="contactDialogVisible" title="联系卖家" width="600px">
+    <el-dialog v-model="contactDialogVisible" :title="$t('item.detail.contactSellerTitle')" width="600px">
       <div class="contact-form">
         <div class="seller-contact-info">
-          <p><strong>卖家：</strong>{{ seller.name }}</p>
-          <p><strong>电话：</strong>{{ seller.phone || '暂未设置' }}</p>
-          <p><strong>微信：</strong>{{ seller.wechat || '暂未设置' }}</p>
-          <p><strong>QQ：</strong>{{ seller.qq || '暂未设置' }}</p>
+          <p><strong>{{ $t('item.detail.sellerLabel') }}</strong>{{ seller.name }}</p>
+          <p><strong>{{ $t('item.detail.phoneLabel') }}</strong>{{ seller.phone || $t('item.detail.notSet') }}</p>
+          <p><strong>{{ $t('item.detail.wechatLabel') }}</strong>{{ seller.wechat || $t('item.detail.notSet') }}</p>
+          <p><strong>{{ $t('item.detail.qqLabel') }}</strong>{{ seller.qq || $t('item.detail.notSet') }}</p>
         </div>
         <div class="contact-message">
           <el-input
             v-model="contactMessage"
             type="textarea"
             :rows="4"
-            placeholder="请输入您想咨询的内容..."
+            :placeholder="$t('item.detail.enterMessage')"
           ></el-input>
         </div>
       </div>
       <template #footer>
-        <el-button @click="contactDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="sendMessage">发送消息</el-button>
+        <el-button @click="contactDialogVisible = false">{{ $t('common.cancel') }}</el-button>
+        <el-button type="primary" @click="sendMessage">{{ $t('item.detail.sendMessage') }}</el-button>
       </template>
     </el-dialog>
 
     <!-- 分享弹窗 -->
-    <el-dialog v-model="shareDialogVisible" title="分享商品" width="400px">
+    <el-dialog v-model="shareDialogVisible" :title="$t('item.detail.shareItem')" width="400px">
       <div class="share-content">
         <div class="share-link">
           <el-input v-model="shareUrl" readonly></el-input>
-          <el-button type="primary" @click="copyShareUrl">复制链接</el-button>
+          <el-button type="primary" @click="copyShareUrl">{{ $t('item.detail.copyLink') }}</el-button>
         </div>
         <div class="share-qrcode">
           <div class="qrcode-image">
             <!-- 这里应该是二维码图片，暂时用占位符 -->
-            <div class="qrcode-placeholder">二维码</div>
+            <div class="qrcode-placeholder">{{ $t('item.detail.qrcode') }}</div>
           </div>
-          <p class="qrcode-text">扫码分享给好友</p>
+          <p class="qrcode-text">{{ $t('item.detail.scanToShare') }}</p>
         </div>
       </div>
     </el-dialog>
@@ -251,6 +251,9 @@ import { useRoute } from 'vue-router';
 import { getItemDetail, favoriteItem, unfavoriteItem, getRecommendedItems } from '@/api/item';
 import { formatTime, formatYear } from '@/utils/common';
 import { ElMessage } from 'element-plus';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 // 路由参数
 const route = useRoute();
@@ -377,18 +380,18 @@ const recommendations = ref<Recommendation[]>([]);
 // 辅助函数
 const getCategoryName = (category: string): string => {
   const categoryMap: Record<string, string> = {
-    digital: '数码电子',
-    textbook: '学习资料',
-    home: '生活家居',
-    sports: '体育用品',
-    clothing: '服饰鞋包',
-    others: '其他类别'
+    digital: t('item.categories.digital'),
+    textbook: t('item.categories.textbook'),
+    home: t('item.categories.home'),
+    sports: t('item.categories.sports'),
+    clothing: t('item.categories.clothing'),
+    others: t('item.categories.others')
   };
-  return categoryMap[category] || '其他类别';
+  return categoryMap[category] || t('item.categories.others');
 };
 
 const getStatusText = (status: string): string => {
-  return status === 'available' ? '在售' : '已售出';
+  return status === 'available' ? t('item.list.onSale') : t('item.list.soldOut');
 };
 
 const getStatusClass = (status: string): string => {
@@ -422,12 +425,12 @@ const loadItemDetail = async () => {
     
     // 检查是否已收藏
     isFavorite.value = response.data?.isFavorite || false;
-    
+
     // 生成分享链接
     shareUrl.value = `${window.location.origin}/#/items/${itemId.value}`;
   } catch (error) {
     console.error('Failed to load item detail:', error);
-    ElMessage.error('加载商品详情失败，请稍后重试');
+    ElMessage.error(t('item.detail.loadFailed'));
     // 使用模拟数据
     item.value = mockItem;
     imageList.value = [mockItem.image, ...mockItemImages];
@@ -470,7 +473,7 @@ const handleTabClick = () => {
 // 联系卖家
 const contactSeller = () => {
   if (item.value.status === 'sold') {
-    ElMessage.warning('该商品已售出');
+    ElMessage.warning(t('item.detail.itemSold'));
     return;
   }
   contactDialogVisible.value = true;
@@ -479,7 +482,7 @@ const contactSeller = () => {
 // 发送消息
 const sendMessage = () => {
   // 这里应该调用发送消息的API
-  ElMessage.success('消息已发送');
+  ElMessage.success(t('item.detail.messageSent'));
   contactDialogVisible.value = false;
   contactMessage.value = '';
 };
@@ -489,15 +492,15 @@ const addToFavorite = async () => {
   try {
     if (isFavorite.value) {
       await unfavoriteItem(itemId.value);
-      ElMessage.success('已取消收藏');
+      ElMessage.success(t('item.detail.unfavoriteSuccess'));
     } else {
       await favoriteItem(itemId.value);
-      ElMessage.success('收藏成功');
+      ElMessage.success(t('item.detail.favoriteSuccess'));
     }
     isFavorite.value = !isFavorite.value;
   } catch (error) {
     console.error('Failed to toggle favorite:', error);
-    ElMessage.error('操作失败，请稍后重试');
+    ElMessage.error(t('item.detail.operationFailed'));
   }
 };
 
@@ -510,17 +513,17 @@ const shareItem = () => {
 const copyShareUrl = async () => {
   try {
     await navigator.clipboard.writeText(shareUrl.value);
-    ElMessage.success('链接已复制');
+    ElMessage.success(t('item.detail.linkCopied'));
   } catch (error) {
     console.error('Failed to copy share url:', error);
-    ElMessage.error('复制失败，请手动复制');
+    ElMessage.error(t('item.detail.copyFailed'));
   }
 };
 
 // 查看卖家店铺
 const viewSellerProfile = () => {
   // 这里应该跳转到卖家店铺页面
-  ElMessage.info('跳转到卖家店铺页面');
+  ElMessage.info(t('item.detail.goToSellerShop'));
 };
 
 // 监听路由变化

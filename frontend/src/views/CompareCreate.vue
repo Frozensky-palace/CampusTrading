@@ -3,16 +3,16 @@
     <!-- 面包屑导航 -->
     <div class="breadcrumb-section">
       <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ path: '/compare-tasks' }">比价任务</el-breadcrumb-item>
-        <el-breadcrumb-item>发布比价</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/' }">{{ $t('compare.create.breadcrumbHome') }}</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/compare-tasks' }">{{ $t('compare.create.breadcrumbList') }}</el-breadcrumb-item>
+        <el-breadcrumb-item>{{ $t('compare.create.breadcrumbCreate') }}</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
 
     <!-- 页面标题 -->
     <div class="page-header">
-      <h1>发布比价任务</h1>
-      <p>填写以下信息，获取最优惠的价格信息</p>
+      <h1>{{ $t('compare.create.title') }}</h1>
+      <p>{{ $t('compare.create.subtitle') }}</p>
     </div>
 
     <!-- 发布表单 -->
@@ -27,32 +27,32 @@
         >
           <!-- 基本信息 -->
           <div class="form-section">
-            <h3 class="section-title">基本信息</h3>
+            <h3 class="section-title">{{ $t('compare.create.basicInfo') }}</h3>
             <div class="form-row">
-              <el-form-item label="任务标题" prop="title" class="form-item-full">
+              <el-form-item :label="$t('compare.create.taskTitle')" prop="title" class="form-item-full">
                 <el-input
                   v-model="compareForm.title"
-                  placeholder="请输入比价任务标题（5-50字）"
+                  :placeholder="$t('compare.create.taskTitlePlaceholder')"
                   maxlength="50"
                   show-word-limit
                 ></el-input>
               </el-form-item>
             </div>
             <div class="form-row">
-              <el-form-item label="商品分类" prop="category" class="form-item-half">
-                <el-select v-model="compareForm.category" placeholder="请选择商品分类">
-                  <el-option label="数码电子" value="digital"></el-option>
-                  <el-option label="学习资料" value="textbook"></el-option>
-                  <el-option label="生活家居" value="home"></el-option>
-                  <el-option label="体育用品" value="sports"></el-option>
-                  <el-option label="服饰鞋包" value="clothing"></el-option>
-                  <el-option label="其他类别" value="others"></el-option>
+              <el-form-item :label="$t('compare.create.category')" prop="category" class="form-item-half">
+                <el-select v-model="compareForm.category" :placeholder="$t('compare.create.categoryPlaceholder')">
+                  <el-option :label="$t('item.categories.digital')" value="digital"></el-option>
+                  <el-option :label="$t('item.categories.textbook')" value="textbook"></el-option>
+                  <el-option :label="$t('item.categories.home')" value="home"></el-option>
+                  <el-option :label="$t('item.categories.sports')" value="sports"></el-option>
+                  <el-option :label="$t('item.categories.clothing')" value="clothing"></el-option>
+                  <el-option :label="$t('item.categories.others')" value="others"></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="预算价格" prop="budget" class="form-item-half">
+              <el-form-item :label="$t('compare.create.budget')" prop="budget" class="form-item-half">
                 <el-input-number
                   v-model="compareForm.budget"
-                  placeholder="请输入您的预算价格"
+                  :placeholder="$t('compare.create.budgetPlaceholder')"
                   :min="0"
                   :precision="2"
                   style="width: 100%;"
@@ -60,20 +60,20 @@
               </el-form-item>
             </div>
             <div class="form-row">
-              <el-form-item label="期望新旧" prop="condition" class="form-item-half">
+              <el-form-item :label="$t('compare.create.expectedCondition')" prop="condition" class="form-item-half">
                 <el-radio-group v-model="compareForm.condition">
-                  <el-radio-button label="全新"></el-radio-button>
-                  <el-radio-button label="9成新"></el-radio-button>
-                  <el-radio-button label="8成新"></el-radio-button>
-                  <el-radio-button label="7成新及以下"></el-radio-button>
-                  <el-radio-button label="不限"></el-radio-button>
+                  <el-radio-button label="全新">{{ $t('compare.create.conditionNew') }}</el-radio-button>
+                  <el-radio-button label="9成新">{{ $t('compare.create.condition90') }}</el-radio-button>
+                  <el-radio-button label="8成新">{{ $t('compare.create.condition80') }}</el-radio-button>
+                  <el-radio-button label="7成新及以下">{{ $t('compare.create.condition70') }}</el-radio-button>
+                  <el-radio-button label="不限">{{ $t('compare.create.conditionAny') }}</el-radio-button>
                 </el-radio-group>
               </el-form-item>
-              <el-form-item label="期望完成时间" prop="deadline" class="form-item-half">
+              <el-form-item :label="$t('compare.create.deadline')" prop="deadline" class="form-item-half">
                 <el-date-picker
                   v-model="compareForm.deadline"
                   type="datetime"
-                  placeholder="选择期望完成时间"
+                  :placeholder="$t('compare.create.deadlinePlaceholder')"
                   :picker-options="dateOptions"
                   style="width: 100%;"
                 ></el-date-picker>
@@ -83,13 +83,13 @@
 
           <!-- 详细描述 -->
           <div class="form-section">
-            <h3 class="section-title">详细描述</h3>
+            <h3 class="section-title">{{ $t('compare.create.detailDescription') }}</h3>
             <div class="form-row">
-              <el-form-item label="任务描述" prop="description" class="form-item-full">
+              <el-form-item :label="$t('compare.create.taskDescription')" prop="description" class="form-item-full">
                 <el-input
                   v-model="compareForm.description"
                   type="textarea"
-                  placeholder="请详细描述您需要比价的商品信息，包括品牌、型号、配置等（10-1000字）"
+                  :placeholder="$t('compare.create.taskDescPlaceholder')"
                   :rows="6"
                   maxlength="1000"
                   show-word-limit
@@ -100,19 +100,19 @@
 
           <!-- 交易信息 -->
           <div class="form-section">
-            <h3 class="section-title">交易信息</h3>
+            <h3 class="section-title">{{ $t('compare.create.tradeInfo') }}</h3>
             <div class="form-row">
-              <el-form-item label="交易地点" prop="location" class="form-item-half">
+              <el-form-item :label="$t('compare.create.tradeLocation')" prop="location" class="form-item-half">
                 <el-input
                   v-model="compareForm.location"
-                  placeholder="请输入您希望的交易地点（如：校园内、附近商圈等）"
+                  :placeholder="$t('compare.create.tradeLocationPlaceholder')"
                 ></el-input>
               </el-form-item>
-              <el-form-item label="交易方式" prop="tradeMethod" class="form-item-half">
+              <el-form-item :label="$t('compare.create.tradeMethod')" prop="tradeMethod" class="form-item-half">
                 <el-radio-group v-model="compareForm.tradeMethod">
-                  <el-radio-button label="线下交易"></el-radio-button>
-                  <el-radio-button label="线上交易"></el-radio-button>
-                  <el-radio-button label="不限"></el-radio-button>
+                  <el-radio-button label="线下交易">{{ $t('compare.create.methodOffline') }}</el-radio-button>
+                  <el-radio-button label="线上交易">{{ $t('compare.create.methodOnline') }}</el-radio-button>
+                  <el-radio-button label="不限">{{ $t('compare.create.methodAny') }}</el-radio-button>
                 </el-radio-group>
               </el-form-item>
             </div>
@@ -120,14 +120,14 @@
 
           <!-- 特殊要求 -->
           <div class="form-section">
-            <h3 class="section-title">特殊要求</h3>
+            <h3 class="section-title">{{ $t('compare.create.specialRequirements') }}</h3>
             <div class="form-row">
-              <el-form-item label="具体要求" class="form-item-full">
+              <el-form-item :label="$t('compare.create.specialRequirements')" class="form-item-full">
                 <div class="requirements-container">
                   <div v-for="(req, index) in compareForm.requirements" :key="index" class="requirement-item">
                     <el-input
                       v-model="req.content"
-                      placeholder="输入具体要求（如：官方保修、配件齐全等）"
+                      :placeholder="$t('compare.create.requirementPlaceholder')"
                       style="margin-bottom: 10px;"
                     ></el-input>
                     <el-button
@@ -144,7 +144,7 @@
                     size="small"
                     class="add-requirement-btn"
                   >
-                    添加要求
+                    {{ $t('compare.create.addRequirement') }}
                   </el-button>
                 </div>
               </el-form-item>
@@ -153,9 +153,9 @@
 
           <!-- 标签 -->
           <div class="form-section">
-            <h3 class="section-title">标签</h3>
+            <h3 class="section-title">{{ $t('compare.create.tagsSection') }}</h3>
             <div class="form-row">
-              <el-form-item label="选择标签" class="form-item-full">
+              <el-form-item :label="$t('compare.create.selectTags')" class="form-item-full">
                 <div class="tags-selector">
                   <el-tag
                     v-for="tag in popularTags"
@@ -168,14 +168,14 @@
                     {{ tag }}
                   </el-tag>
                 </div>
-                <p class="tags-hint">点击选择标签，最多选择5个</p>
+                <p class="tags-hint">{{ $t('compare.create.tagsHint') }}</p>
               </el-form-item>
             </div>
             <div class="form-row">
-              <el-form-item label="自定义标签" class="form-item-full">
+              <el-form-item :label="$t('compare.create.customTag')" class="form-item-full">
                 <el-input
                   v-model="customTag"
-                  placeholder="输入自定义标签，按回车添加"
+                  :placeholder="$t('compare.create.customTagPlaceholder')"
                   @keyup.enter="addCustomTag"
                   :maxlength="10"
                   show-word-limit
@@ -197,30 +197,30 @@
 
           <!-- 联系方式 -->
           <div class="form-section">
-            <h3 class="section-title">联系方式</h3>
+            <h3 class="section-title">{{ $t('compare.create.contactSettings') }}</h3>
             <div class="form-row">
-              <el-form-item label="联系方式设置" class="form-item-full">
+              <el-form-item :label="$t('compare.create.contactSettingsLabel')" class="form-item-full">
                 <el-checkbox-group v-model="contactOptions">
-                  <el-checkbox label="站内信">站内信（默认开启）</el-checkbox>
-                  <el-checkbox label="手机">手机</el-checkbox>
-                  <el-checkbox label="微信">微信</el-checkbox>
+                  <el-checkbox label="站内信">{{ $t('compare.create.internalMessage') }}</el-checkbox>
+                  <el-checkbox label="手机">{{ $t('compare.create.phoneNumber') }}</el-checkbox>
+                  <el-checkbox label="微信">{{ $t('compare.create.wechatNumber') }}</el-checkbox>
                 </el-checkbox-group>
               </el-form-item>
             </div>
             <div v-if="contactOptions.includes('手机')" class="form-row">
-              <el-form-item label="手机号码" prop="phone" class="form-item-half">
+              <el-form-item :label="$t('compare.create.phoneLabel')" prop="phone" class="form-item-half">
                 <el-input
                   v-model="compareForm.phone"
-                  placeholder="请输入您的手机号码"
+                  :placeholder="$t('compare.create.phoneInputPlaceholder')"
                   maxlength="11"
                 ></el-input>
               </el-form-item>
             </div>
             <div v-if="contactOptions.includes('微信')" class="form-row">
-              <el-form-item label="微信号码" prop="wechat" class="form-item-half">
+              <el-form-item :label="$t('compare.create.wechatLabel')" prop="wechat" class="form-item-half">
                 <el-input
                   v-model="compareForm.wechat"
-                  placeholder="请输入您的微信号码"
+                  :placeholder="$t('compare.create.wechatInputPlaceholder')"
                 ></el-input>
               </el-form-item>
             </div>
@@ -228,8 +228,8 @@
 
           <!-- 提交按钮 -->
           <div class="form-actions">
-            <el-button @click="cancelCreate">取消</el-button>
-            <el-button type="primary" @click="submitForm">发布比价任务</el-button>
+            <el-button @click="cancelCreate">{{ $t('compare.create.cancel') }}</el-button>
+            <el-button type="primary" @click="submitForm">{{ $t('compare.create.submit') }}</el-button>
           </div>
         </el-form>
       </el-card>
@@ -238,11 +238,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue';
+import { ref, reactive, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElMessage, ElMessageBox } from 'element-plus';
+import { useI18n } from 'vue-i18n';
 import compareAPI from '@/api/compare';
 const createCompareTask = compareAPI.createCompareTask;
+
+// i18n
+const { t } = useI18n();
 
 // 路由
 const router = useRouter();
@@ -274,11 +278,23 @@ const dateOptions = {
 };
 
 // 热门标签
-const popularTags = [
-  '笔记本电脑', '手机', '耳机', '考研资料', '教材',
-  '显示器', '键盘', '相机', '运动鞋', '平板',
-  '电动车', '自行车', '书籍', '乐器', '游戏设备'
-];
+const popularTags = computed(() => [
+  t('item.list.popularTags.laptop'),
+  t('item.list.popularTags.phone'),
+  t('item.list.popularTags.headphones'),
+  t('item.list.popularTags.examMaterials'),
+  t('item.list.popularTags.textbook'),
+  t('item.list.popularTags.monitor'),
+  t('item.list.popularTags.keyboard'),
+  t('item.list.popularTags.camera'),
+  t('item.list.popularTags.sneakers'),
+  t('item.list.popularTags.tablet'),
+  t('item.list.popularTags.electricScooter'),
+  t('item.list.popularTags.bicycle'),
+  t('item.list.popularTags.books'),
+  t('item.list.popularTags.instrument'),
+  t('item.list.popularTags.gamingDevice')
+]);
 
 // 已选标签
 const selectedTags = ref<string[]>([]);
@@ -290,32 +306,32 @@ const customTag = ref('');
 const contactOptions = ref(['站内信']);
 
 // 表单验证规则
-const compareRules = {
+const compareRules = computed(() => ({
   title: [
-    { required: true, message: '请输入任务标题', trigger: 'blur' },
-    { min: 5, max: 50, message: '标题长度在5到50个字符之间', trigger: 'blur' }
+    { required: true, message: t('compare.create.validation.titleRequired'), trigger: 'blur' },
+    { min: 5, max: 50, message: t('compare.create.validation.titleLength'), trigger: 'blur' }
   ],
   category: [
-    { required: true, message: '请选择商品分类', trigger: 'change' }
+    { required: true, message: t('compare.create.validation.categoryRequired'), trigger: 'change' }
   ],
   budget: [
-    { required: true, message: '请输入预算价格', trigger: 'blur' },
-    { type: 'number', min: 0.01, message: '预算价格必须大于0', trigger: 'blur' }
+    { required: true, message: t('compare.create.validation.budgetRequired'), trigger: 'blur' },
+    { type: 'number', min: 0.01, message: t('compare.create.validation.budgetMin'), trigger: 'blur' }
   ],
   description: [
-    { required: true, message: '请输入任务描述', trigger: 'blur' },
-    { min: 10, max: 1000, message: '描述长度在10到1000个字符之间', trigger: 'blur' }
+    { required: true, message: t('compare.create.validation.descriptionRequired'), trigger: 'blur' },
+    { min: 10, max: 1000, message: t('compare.create.validation.descriptionLength'), trigger: 'blur' }
   ],
   location: [
-    { required: true, message: '请输入交易地点', trigger: 'blur' }
+    { required: true, message: t('compare.create.validation.locationRequired'), trigger: 'blur' }
   ],
   deadline: [
-    { required: true, message: '请选择期望完成时间', trigger: 'change' }
+    { required: true, message: t('compare.create.validation.deadlineRequired'), trigger: 'change' }
   ],
   phone: [
     {
       pattern: /^1[3-9]\d{9}$/,
-      message: '请输入正确的手机号码',
+      message: t('compare.create.validation.phoneInvalid'),
       trigger: 'blur',
       required: () => contactOptions.value.includes('手机')
     }
@@ -323,11 +339,11 @@ const compareRules = {
   wechat: [
     {
       required: () => contactOptions.value.includes('微信'),
-      message: '请输入微信号码',
+      message: t('compare.create.validation.wechatRequired'),
       trigger: 'blur'
     }
   ]
-};
+}));
 
 // 添加要求
 const addRequirement = () => {
@@ -347,7 +363,7 @@ const toggleTag = (tag: string) => {
   } else if (selectedTags.value.length < 5) {
     selectedTags.value.push(tag);
   } else {
-    ElMessage.warning('最多只能选择5个标签');
+    ElMessage.warning(t('compare.create.maxTags'));
   }
 };
 
@@ -356,11 +372,11 @@ const addCustomTag = () => {
   const tag = customTag.value.trim();
   if (!tag) return;
   if (selectedTags.value.length >= 5) {
-    ElMessage.warning('最多只能选择5个标签');
+    ElMessage.warning(t('compare.create.maxTags'));
     return;
   }
   if (selectedTags.value.includes(tag)) {
-    ElMessage.warning('该标签已添加');
+    ElMessage.warning(t('compare.create.tagExists'));
     return;
   }
   selectedTags.value.push(tag);
@@ -412,25 +428,25 @@ const submitForm = async () => {
     
     // 调用API提交数据
     await createCompareTask(taskData);
-    
-    ElMessage.success('比价任务发布成功！');
-    
+
+    ElMessage.success(t('compare.create.publishSuccess'));
+
     // 跳转到比价任务详情页
     router.push('/compare-tasks');
   } catch (error) {
     console.error('Failed to create compare task:', error);
-    ElMessage.error('发布失败，请稍后重试');
+    ElMessage.error(t('compare.create.publishFailed'));
   }
 };
 
 // 取消创建
 const cancelCreate = () => {
   ElMessageBox.confirm(
-    '确定要取消发布比价任务吗？已填写的内容将会丢失',
-    '确认取消',
+    t('compare.create.cancelConfirm'),
+    t('compare.create.cancelTitle'),
     {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
+      confirmButtonText: t('common.confirm'),
+      cancelButtonText: t('common.cancel'),
       type: 'warning'
     }
   ).then(() => {

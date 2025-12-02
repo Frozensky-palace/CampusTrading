@@ -139,12 +139,12 @@ export const itemAPI = {
 
   // 获取热门商品
   getHotItems: (params?: { limit?: number }) => {
-    return request.get('/item/hot', { params });
+    return request.get('/items/hot', { params });
   },
 
   // 获取最新求购
   getLatestRequests: (params?: { limit?: number }) => {
-    return request.get('/request/latest', { params });
+    return request.get('/requests/latest', { params });
   },
 
   // 获取热门比价任务
@@ -155,7 +155,7 @@ export const itemAPI = {
 
   // 获取平台统计数据
   getPlatformStats: () => {
-    return request.get('/item/platform/stats');
+    return request.get('/items/platform/stats');
   },
 
   // 获取新品上架

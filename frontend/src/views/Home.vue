@@ -8,7 +8,7 @@
           <div class="carousel-caption">
             <h3>{{ item.title }}</h3>
             <p>{{ item.description }}</p>
-            <el-button type="primary" :href="item.link">立即查看</el-button>
+            <el-button type="primary" :href="item.link">{{ $t('home.viewNow') }}</el-button>
           </div>
         </el-carousel-item>
       </el-carousel>
@@ -18,11 +18,9 @@
     <div class="feature-nav">
       <div class="feature-item" v-for="feature in features" :key="feature.id">
         <router-link :to="feature.route">
-
           <div class="feature-icon">
             <el-icon :size="32"><component :is="feature.icon" /></el-icon>
           </div>
->>>>>>> 43a95c22732f68082b5f5c17b4a1de71e0c1ab47
           <div class="feature-text">{{ feature.name }}</div>
         </router-link>
       </div>
@@ -31,15 +29,15 @@
     <!-- 热门商品区域 -->
     <section class="section-container">
       <div class="section-header">
-        <h2 class="section-title">热门商品</h2>
-        <router-link to="/items" class="section-more">查看更多 <el-icon><ArrowRight /></el-icon></router-link>
+        <h2 class="section-title">{{ $t('home.sections.hotItems') }}</h2>
+        <router-link to="/items" class="section-more">{{ $t('common.viewMore') }} <el-icon><ArrowRight /></el-icon></router-link>
       </div>
       <div class="item-list">
         <div class="item-card" v-for="item in hotItems" :key="item.id">
           <router-link :to="`/items/${item.id}`" class="item-link">
             <div class="item-image">
               <img :src="item.image" :alt="item.name" class="image">
-              <span v-if="item.discount" class="discount-badge">{{ item.discount }}折</span>
+              <span v-if="item.discount" class="discount-badge">{{ item.discount }}{{ $t('mockItems.discount') }}</span>
             </div>
             <div class="item-info">
               <h3 class="item-name">{{ item.name }}</h3>
@@ -60,8 +58,8 @@
     <!-- 最新求购区域 -->
     <section class="section-container bg-gray">
       <div class="section-header">
-        <h2 class="section-title">最新求购</h2>
-        <router-link to="/requests" class="section-more">查看更多 <el-icon><ArrowRight /></el-icon></router-link>
+        <h2 class="section-title">{{ $t('home.sections.latestRequests') }}</h2>
+        <router-link to="/requests" class="section-more">{{ $t('common.viewMore') }} <el-icon><ArrowRight /></el-icon></router-link>
       </div>
       <div class="request-list">
         <router-link :to="`/requests/detail/${request.id}`" class="request-item" v-for="request in latestRequests" :key="request.id">
@@ -73,7 +71,7 @@
             </div>
           </div>
           <div class="request-meta">
-            <div class="price-range">预算: ¥{{ request.minPrice }} - ¥{{ request.maxPrice }}</div>
+            <div class="price-range">{{ $t('home.budget') }}: ¥{{ request.minPrice }} - ¥{{ request.maxPrice }}</div>
             <div class="time-posted">{{ formatTime(request.createdAt) }}</div>
           </div>
         </router-link>
@@ -83,15 +81,15 @@
     <!-- 比价任务区域 -->
     <section class="section-container">
       <div class="section-header">
-        <h2 class="section-title">热门比价</h2>
-        <router-link to="/compare" class="section-more">查看更多 <el-icon><ArrowRight /></el-icon></router-link>
+        <h2 class="section-title">{{ $t('home.sections.hotCompare') }}</h2>
+        <router-link to="/compare" class="section-more">{{ $t('common.viewMore') }} <el-icon><ArrowRight /></el-icon></router-link>
       </div>
       <div class="compare-list">
         <div class="compare-card" v-for="task in hotCompareTasks" :key="task.id">
           <router-link :to="`/compare/detail/${task.id}`" class="compare-link">
             <div class="compare-header">
               <h3 class="compare-title">{{ task.title }}</h3>
-              <span class="compare-count">{{ task.products.length }}个商品</span>
+              <span class="compare-count">{{ task.products.length }} {{ $t('home.products') }}</span>
             </div>
             <div class="compare-products">
               <div class="product-mini" v-for="(product, index) in task.products.slice(0, 3)" :key="index">
@@ -103,7 +101,7 @@
               </div>
             </div>
             <div class="compare-meta">
-              <span class="creator">by {{ task.creator }}</span>
+              <span class="creator">{{ $t('home.by') }} {{ task.creator }}</span>
               <span class="likes"><el-icon><Star /></el-icon>{{ task.likes }}</span>
             </div>
           </router-link>
@@ -114,11 +112,9 @@
     <!-- 平台优势区域 -->
     <section class="advantages-section">
       <div class="advantage-item" v-for="advantage in advantages" :key="advantage.id">
-
         <div class="advantage-icon">
           <el-icon :size="48"><component :is="advantage.icon" /></el-icon>
         </div>
->>>>>>> 43a95c22732f68082b5f5c17b4a1de71e0c1ab47
         <h3 class="advantage-title">{{ advantage.title }}</h3>
         <p class="advantage-description">{{ advantage.description }}</p>
       </div>
@@ -135,9 +131,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { formatTime } from '@/utils/common';
-
 
 import { getHotItems, getLatestRequests, getHotCompareTasks, getPlatformStats } from '@/api/item';
 import {
@@ -155,36 +151,88 @@ import {
   Star
 } from '@element-plus/icons-vue';
 
-// 轮播图数据
-const carouselItems = ref([
+const { t } = useI18n();
+
+// 获取静态资源路径的帮助函数
+const getAssetUrl = (path: string) => {
+  return new URL(`../assets/images/${path}`, import.meta.url).href;
+};
+
+// 轮播图数据 - 使用计算属性支持语言切换
+const carouselItems = computed(() => [
   {
-    image: '@/assets/images/banner1.jpg',
-    title: '新学期特惠',
-    description: '二手教材大促销，助力新学期学习',
+    image: getAssetUrl('back-to-school.png'),
+    title: t('home.banner.newSemester'),
+    description: t('home.banner.newSemesterDesc'),
     link: '/items?category=textbook'
   },
   {
-    image: '@/assets/images/campus-digital-festival.jpg',
-    title: '校园数码节',
-    description: '数码产品低至5折，品质保证',
+    image: getAssetUrl('campus-digital-festival.jpg'),
+    title: t('home.banner.digitalFestival'),
+    description: t('home.banner.digitalFestivalDesc'),
     link: '/items?category=digital'
   },
   {
-    image: '@/assets/images/banner3.jpg',
-    title: '毕业季特惠',
-    description: '学长学姐低价转让，学弟学妹快来淘',
+    image: getAssetUrl('graduation-season.png'),
+    title: t('home.banner.graduation'),
+    description: t('home.banner.graduationDesc'),
     link: '/items?tag=graduate'
   }
 ]);
 
-// 功能导航数据
-const features = ref([
-
-  { id: 1, name: '发布商品', icon: CirclePlus, route: '/items/create' },
-  { id: 2, name: '发布求购', icon: QuestionFilled, route: '/requests/create' },
-  { id: 3, name: '发起比价', icon: Sort, route: '/compare/create' },
-  { id: 4, name: '个人中心', icon: User, route: '/user/profile' }
+// 功能导航数据 - 使用计算属性支持语言切换
+const features = computed(() => [
+  { id: 1, name: t('home.features.publishItem'), icon: CirclePlus, route: '/items/create' },
+  { id: 2, name: t('home.features.publishRequest'), icon: QuestionFilled, route: '/requests/create' },
+  { id: 3, name: t('home.features.createCompare'), icon: Sort, route: '/compare/create' },
+  { id: 4, name: t('home.features.myCenter'), icon: User, route: '/user/profile' }
 ]);
+
+// 平台优势数据 - 使用计算属性支持语言切换
+const advantages = computed(() => [
+  {
+    id: 1,
+    icon: Lock,
+    title: t('home.advantages.safeTransaction'),
+    description: t('home.advantages.safeTransactionDesc')
+  },
+  {
+    id: 2,
+    icon: Lightning,
+    title: t('home.advantages.quickPublish'),
+    description: t('home.advantages.quickPublishDesc')
+  },
+  {
+    id: 3,
+    icon: PriceTag,
+    title: t('home.advantages.goodValue'),
+    description: t('home.advantages.goodValueDesc')
+  },
+  {
+    id: 4,
+    icon: Headset,
+    title: t('home.advantages.goodService'),
+    description: t('home.advantages.goodServiceDesc')
+  }
+]);
+
+// 统计数据
+const stats = ref([
+  { id: 1, value: '10,000+', label: '' },
+  { id: 2, value: '5,000+', label: '' },
+  { id: 3, value: '8,000+', label: '' },
+  { id: 4, value: '98%', label: '' }
+]);
+
+// 更新统计数据标签
+const updateStatsLabels = () => {
+  stats.value = [
+    { id: 1, value: stats.value[0].value, label: t('home.stats.registeredUsers') },
+    { id: 2, value: stats.value[1].value, label: t('home.stats.itemsOnSale') },
+    { id: 3, value: stats.value[2].value, label: t('home.stats.successfulDeals') },
+    { id: 4, value: stats.value[3].value, label: t('home.stats.positiveRate') }
+  ];
+};
 
 // 类型定义
 interface HotItem {
@@ -231,271 +279,231 @@ const latestRequests = ref<RequestItem[]>([]);
 // 热门比价任务
 const hotCompareTasks = ref<CompareTask[]>([]);
 
-// 平台优势数据
-const advantages = ref([
-  {
-    id: 1,
-
-    icon: Lock,
-    title: '安全交易',
-    description: '实名认证，交易保障，让您放心购买'
-  },
-  {
-    id: 2,
-
-    icon: Lightning,
-
-    title: '快速发布',
-    description: '简单几步，轻松发布您的闲置物品'
-  },
-  {
-    id: 3,
-
-    icon: PriceTag,
-
-    title: '高性价比',
-    description: '校园内交易，省去中间环节，价格更优惠'
-  },
-  {
-    id: 4,
-
-    icon: Headset,
-
-    title: '贴心服务',
-    description: '专业客服团队，7x12小时为您服务'
-  }
-]);
-
-// 统计数据
-const stats = ref([
-  { id: 1, value: '10,000+', label: '注册用户' },
-  { id: 2, value: '5,000+', label: '在售商品' },
-  { id: 3, value: '8,000+', label: '成功交易' },
-  { id: 4, value: '98%', label: '好评率' }
-]);
-
 // 加载数据
 onMounted(async () => {
+  // 初始化统计标签
+  updateStatsLabels();
+
   try {
     // 加载热门商品
     const itemsRes = await getHotItems({ limit: 8 });
-    hotItems.value = itemsRes.data || mockHotItems;
-    
+    hotItems.value = itemsRes.data || mockHotItems.value;
+
     // 加载最新求购
     const requestsRes = await getLatestRequests({ limit: 5 });
-    latestRequests.value = requestsRes.data || mockLatestRequests;
-    
+    latestRequests.value = requestsRes.data || mockLatestRequests.value;
+
     // 加载热门比价任务（修正路径为正确的API端点）
     try {
       const response = await fetch('/api/compare/hot?limit=4');
       if (response.ok) {
         const data = await response.json();
-        hotCompareTasks.value = data.data || mockHotCompareTasks;
+        hotCompareTasks.value = data.data || mockHotCompareTasks.value;
       } else {
-        console.warn('比价任务API请求失败，使用模拟数据');
-        hotCompareTasks.value = mockHotCompareTasks;
+        console.warn('Compare API failed, using mock data');
+        hotCompareTasks.value = mockHotCompareTasks.value;
       }
     } catch (e) {
-      console.warn('比价任务API请求异常，使用模拟数据', e);
-      hotCompareTasks.value = mockHotCompareTasks;
+      console.warn('Compare API error, using mock data', e);
+      hotCompareTasks.value = mockHotCompareTasks.value;
     }
-    
+
     // 加载平台统计数据
     const statsRes = await getPlatformStats();
     if (statsRes.data) {
       stats.value = [
-        { id: 1, value: statsRes.data.userCount, label: '注册用户' },
-        { id: 2, value: statsRes.data.itemCount, label: '在售商品' },
-        { id: 3, value: statsRes.data.transactionCount, label: '成功交易' },
-        { id: 4, value: statsRes.data.ratingRate, label: '好评率' }
+        { id: 1, value: statsRes.data.userCount, label: t('home.stats.registeredUsers') },
+        { id: 2, value: statsRes.data.itemCount, label: t('home.stats.itemsOnSale') },
+        { id: 3, value: statsRes.data.transactionCount, label: t('home.stats.successfulDeals') },
+        { id: 4, value: statsRes.data.ratingRate, label: t('home.stats.positiveRate') }
       ];
     }
   } catch (error) {
     console.error('Failed to load home page data:', error);
     // 使用模拟数据
-    hotItems.value = mockHotItems;
-    latestRequests.value = mockLatestRequests;
-    hotCompareTasks.value = mockHotCompareTasks;
+    hotItems.value = mockHotItems.value;
+    latestRequests.value = mockLatestRequests.value;
+    hotCompareTasks.value = mockHotCompareTasks.value;
   }
 });
 
-// 模拟热门商品数据
-const mockHotItems = [
+// 模拟热门商品数据 - 使用计算属性支持语言切换
+const mockHotItems = computed(() => [
   {
     id: 1,
-    name: '全新未拆封MacBook Pro 2022',
-    image: '@/assets/images/macbook.jpg',
+    name: t('mockItems.item1.name'),
+    image: getAssetUrl('macbook.jpg'),
     price: 8999,
     originalPrice: 11999,
     discount: 7.5,
-    location: '主校区',
+    location: t('mockItems.item1.location'),
     views: 238
   },
   {
     id: 2,
-    name: '九成新iPad Pro 2021',
-    image: '@/assets/images/ipad.jpg',
+    name: t('mockItems.item2.name'),
+    image: getAssetUrl('ipad.jpg'),
     price: 4500,
     originalPrice: 6299,
-    location: '东校区',
+    location: t('mockItems.item2.location'),
     views: 196
   },
   {
     id: 3,
-    name: '大学英语四六级词汇书',
-    image: '@/assets/images/englishbook.jpg',
+    name: t('mockItems.item3.name'),
+    image: getAssetUrl('englishbook.jpg'),
     price: 25,
     originalPrice: 58,
     discount: 4.3,
-    location: '图书馆',
+    location: t('mockItems.item3.location'),
     views: 152
   },
   {
     id: 4,
-    name: '考研数学复习全书',
-    image: '/assets/images/mathbook.jpg',
+    name: t('mockItems.item4.name'),
+    image: getAssetUrl('mathbook.jpg'),
     price: 35,
     originalPrice: 78,
-    location: '西校区',
+    location: t('mockItems.item4.location'),
     views: 128
   },
   {
     id: 5,
-    name: '篮球Nike NBA官方用球',
-    image: '/assets/images/basketball.jpg',
+    name: t('mockItems.item5.name'),
+    image: getAssetUrl('basketball.jpg'),
     price: 80,
     originalPrice: 168,
-    location: '体育馆',
+    location: t('mockItems.item5.location'),
     views: 96
   },
   {
     id: 6,
-    name: '吉他初学者套装',
-    image: '/assets/images/guitar.jpg',
+    name: t('mockItems.item6.name'),
+    image: getAssetUrl('guitar.jpg'),
     price: 199,
     originalPrice: 399,
-    location: '音乐楼',
+    location: t('mockItems.item6.location'),
     views: 85
   },
   {
     id: 7,
-    name: '专业绘图板Wacom',
-    image: '/assets/images/tablet.jpg',
+    name: t('mockItems.item7.name'),
+    image: getAssetUrl('tablet.jpg'),
     price: 450,
     originalPrice: 899,
-    location: '设计学院',
+    location: t('mockItems.item7.location'),
     views: 72
   },
   {
     id: 8,
-    name: '校园自行车',
-    image: '/assets/images/bike.jpg',
+    name: t('mockItems.item8.name'),
+    image: getAssetUrl('bike.jpg'),
     price: 150,
     originalPrice: 350,
-    location: '车棚',
+    location: t('mockItems.item8.location'),
     views: 65
   }
-];
+]);
 
-// 模拟最新求购数据
-const mockLatestRequests = [
+// 模拟最新求购数据 - 使用计算属性支持语言切换
+const mockLatestRequests = computed(() => [
   {
     id: 1,
-    title: '求购二手考研政治资料',
-    content: '求购最新版考研政治全套资料，最好是2023年的，有笔记更好。',
-    tags: ['考研', '政治', '资料'],
+    title: t('mockRequests.request1.title'),
+    content: t('mockRequests.request1.content'),
+    tags: [t('mockRequests.request1.tag1'), t('mockRequests.request1.tag2'), t('mockRequests.request1.tag3')],
     minPrice: 50,
     maxPrice: 150,
     createdAt: new Date().getTime() - 3600000
   },
   {
     id: 2,
-    title: '寻找二手专业相机',
-    content: '求购一台入门级单反或微单相机，用于学习摄影课程，预算2000左右。',
-    tags: ['相机', '摄影', '数码'],
+    title: t('mockRequests.request2.title'),
+    content: t('mockRequests.request2.content'),
+    tags: [t('mockRequests.request2.tag1'), t('mockRequests.request2.tag2'), t('mockRequests.request2.tag3')],
     minPrice: 1500,
     maxPrice: 2500,
     createdAt: new Date().getTime() - 7200000
   },
   {
     id: 3,
-    title: '求购二手电动车',
-    content: '求购一辆二手电动车，电池续航至少30公里，有正规发票。',
-    tags: ['电动车', '代步', '出行'],
+    title: t('mockRequests.request3.title'),
+    content: t('mockRequests.request3.content'),
+    tags: [t('mockRequests.request3.tag1'), t('mockRequests.request3.tag2'), t('mockRequests.request3.tag3')],
     minPrice: 800,
     maxPrice: 1500,
     createdAt: new Date().getTime() - 10800000
   },
   {
     id: 4,
-    title: '收购计算机专业教材',
-    content: '收购计算机科学与技术专业大二教材，包括数据结构、操作系统等。',
-    tags: ['教材', '计算机', '专业'],
+    title: t('mockRequests.request4.title'),
+    content: t('mockRequests.request4.content'),
+    tags: [t('mockRequests.request4.tag1'), t('mockRequests.request4.tag2'), t('mockRequests.request4.tag3')],
     minPrice: 100,
     maxPrice: 300,
     createdAt: new Date().getTime() - 14400000
   },
   {
     id: 5,
-    title: '求购二手空调',
-    content: '求购一台1.5匹二手空调，制冷效果好，价格实惠。',
-    tags: ['电器', '空调', '夏季'],
+    title: t('mockRequests.request5.title'),
+    content: t('mockRequests.request5.content'),
+    tags: [t('mockRequests.request5.tag1'), t('mockRequests.request5.tag2'), t('mockRequests.request5.tag3')],
     minPrice: 800,
     maxPrice: 1200,
     createdAt: new Date().getTime() - 18000000
   }
-];
+]);
 
-// 模拟热门比价任务数据
-const mockHotCompareTasks = [
+// 模拟热门比价任务数据 - 使用计算属性支持语言切换
+const mockHotCompareTasks = computed(() => [
   {
     id: 1,
-    title: '2000元预算笔记本电脑推荐',
+    title: t('mockCompare.compare1.title'),
     products: [
-      { name: '联想小新', price: 1999, image: '/assets/images/laptop1.jpg' },
-      { name: '戴尔灵越', price: 2199, image: '/assets/images/laptop2.jpg' },
-      { name: '惠普星系列', price: 1899, image: '/assets/images/laptop3.jpg' },
-      { name: '华为MateBook', price: 2399, image: '/assets/images/laptop4.jpg' }
+      { name: t('mockCompare.compare1.product1'), price: 1999, image: getAssetUrl('laptop1.jpg') },
+      { name: t('mockCompare.compare1.product2'), price: 2199, image: getAssetUrl('laptop2.jpg') },
+      { name: t('mockCompare.compare1.product3'), price: 1899, image: getAssetUrl('laptop3.jpg') },
+      { name: t('mockCompare.compare1.product4'), price: 2399, image: getAssetUrl('laptop4.jpg') }
     ],
-    creator: '数码达人',
+    creator: t('mockCompare.compare1.creator'),
     likes: 128
   },
   {
     id: 2,
-    title: '校园周边美食性价比大比拼',
+    title: t('mockCompare.compare2.title'),
     products: [
-      { name: '一号食堂', price: 15, image: '@/assets/images/food1.jpg' },
-      { name: '校外小吃街', price: 25, image: '@/assets/images/food2.jpg' },
-      { name: '外卖平台', price: 20, image: '@/assets/images/food3.jpg' }
+      { name: t('mockCompare.compare2.product1'), price: 15, image: getAssetUrl('food1.jpg') },
+      { name: t('mockCompare.compare2.product2'), price: 25, image: getAssetUrl('food2.jpg') },
+      { name: t('mockCompare.compare2.product3'), price: 20, image: getAssetUrl('food3.jpg') }
     ],
-    creator: '美食家',
+    creator: t('mockCompare.compare2.creator'),
     likes: 95
   },
   {
     id: 3,
-    title: '考研辅导书最全对比',
+    title: t('mockCompare.compare3.title'),
     products: [
-      { name: '张宇数学', price: 68, image: '@/assets/images/book1.jpg' },
-      { name: '李永乐复习全书', price: 78, image: '@/assets/images/book2.jpg' },
-      { name: '肖秀荣政治', price: 58, image: '@/assets/images/book3.jpg' },
-      { name: '新东方英语', price: 98, image: '@/assets/images/book4.jpg' },
-      { name: '启航考研', price: 65, image: '@/assets/images/book5.jpg' }
+      { name: t('mockCompare.compare3.product1'), price: 68, image: getAssetUrl('book1.jpg') },
+      { name: t('mockCompare.compare3.product2'), price: 78, image: getAssetUrl('book2.jpg') },
+      { name: t('mockCompare.compare3.product3'), price: 58, image: getAssetUrl('book3.jpg') },
+      { name: t('mockCompare.compare3.product4'), price: 98, image: getAssetUrl('book4.jpg') },
+      { name: t('mockCompare.compare3.product5'), price: 65, image: getAssetUrl('book5.jpg') }
     ],
-    creator: '考研学长',
+    creator: t('mockCompare.compare3.creator'),
     likes: 215
   },
   {
     id: 4,
-    title: '校园代步工具对比',
+    title: t('mockCompare.compare4.title'),
     products: [
-      { name: '自行车', price: 300, image: '@/assets/images/bike1.jpg' },
-      { name: '电动车', price: 1200, image: '@/assets/images/ebike.jpg' },
-      { name: '平衡车', price: 800, image: '@/assets/images/hoverboard.jpg' }
+      { name: t('mockCompare.compare4.product1'), price: 300, image: getAssetUrl('bike1.jpg') },
+      { name: t('mockCompare.compare4.product2'), price: 1200, image: getAssetUrl('ebike.jpg') },
+      { name: t('mockCompare.compare4.product3'), price: 800, image: getAssetUrl('hoverboard.jpg') }
     ],
-    creator: '校园生活家',
+    creator: t('mockCompare.compare4.creator'),
     likes: 76
   }
-];
+]);
 </script>
 
 <style scoped>

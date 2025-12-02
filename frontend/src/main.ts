@@ -14,6 +14,9 @@ import pinia from './store'
 // 导入路由
 import router from './router'
 
+// 导入国际化
+import i18n from './i18n'
+
 // 创建应用实例
 const app = createApp(App)
 
@@ -26,6 +29,7 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 app.use(ElementPlus)
 app.use(pinia)
 app.use(router)
+app.use(i18n)
 
 // 挂载应用
 app.mount('#app')

@@ -2,76 +2,76 @@
   <div class="request-item-create-container">
     <!-- 页面标题 -->
     <div class="page-header">
-      <h1>发布求购</h1>
-      <p>告诉我们您需要什么，让卖家主动联系您</p>
+      <h1>{{ $t('request.create.title') }}</h1>
+      <p>{{ $t('request.create.subtitle') }}</p>
     </div>
 
     <!-- 发布表单 -->
     <div class="form-container">
       <el-form ref="requestFormRef" :model="requestForm" :rules="requestRules" label-width="120px">
         <!-- 求购信息 -->
-        <el-form-item label="求购标题" prop="title">
-          <el-input v-model="requestForm.title" placeholder="请输入求购标题" maxlength="50" show-word-limit />
+        <el-form-item :label="$t('request.create.requestTitle')" prop="title">
+          <el-input v-model="requestForm.title" :placeholder="$t('request.create.titlePlaceholder')" maxlength="50" show-word-limit />
         </el-form-item>
 
-        <el-form-item label="商品分类" prop="category">
-          <el-select v-model="requestForm.category" placeholder="请选择商品分类">
-            <el-option label="数码电子" value="digital"></el-option>
-            <el-option label="学习资料" value="textbook"></el-option>
-            <el-option label="生活家居" value="home"></el-option>
-            <el-option label="体育用品" value="sports"></el-option>
-            <el-option label="服饰鞋包" value="clothing"></el-option>
-            <el-option label="其他类别" value="others"></el-option>
+        <el-form-item :label="$t('request.create.category')" prop="category">
+          <el-select v-model="requestForm.category" :placeholder="$t('request.create.categoryPlaceholder')">
+            <el-option :label="$t('item.categories.digital')" value="digital"></el-option>
+            <el-option :label="$t('item.categories.textbook')" value="textbook"></el-option>
+            <el-option :label="$t('item.categories.home')" value="home"></el-option>
+            <el-option :label="$t('item.categories.sports')" value="sports"></el-option>
+            <el-option :label="$t('item.categories.clothing')" value="clothing"></el-option>
+            <el-option :label="$t('item.categories.others')" value="others"></el-option>
           </el-select>
         </el-form-item>
 
         <!-- 价格信息 -->
-        <el-form-item label="最高出价" prop="maxPrice">
-          <el-input-number v-model="requestForm.maxPrice" :min="0" :precision="2" placeholder="请输入您能接受的最高价格" />
+        <el-form-item :label="$t('request.create.maxPrice')" prop="maxPrice">
+          <el-input-number v-model="requestForm.maxPrice" :min="0" :precision="2" :placeholder="$t('request.create.maxPricePlaceholder')" />
         </el-form-item>
 
         <!-- 期望新旧程度 -->
-        <el-form-item label="期望新旧" prop="expectedCondition">
+        <el-form-item :label="$t('request.create.expectedCondition')" prop="expectedCondition">
           <el-radio-group v-model="requestForm.expectedCondition">
-            <el-radio-button label="全新">全新</el-radio-button>
-            <el-radio-button label="九成新">九成新</el-radio-button>
-            <el-radio-button label="八成新">八成新</el-radio-button>
-            <el-radio-button label="七成新">七成新</el-radio-button>
-            <el-radio-button label="六成新及以下">六成新及以下</el-radio-button>
+            <el-radio-button :label="$t('request.create.conditionNew')">{{ $t('request.create.conditionNew') }}</el-radio-button>
+            <el-radio-button :label="$t('request.create.condition90')">{{ $t('request.create.condition90') }}</el-radio-button>
+            <el-radio-button :label="$t('request.create.condition80')">{{ $t('request.create.condition80') }}</el-radio-button>
+            <el-radio-button :label="$t('request.create.condition70')">{{ $t('request.create.condition70') }}</el-radio-button>
+            <el-radio-button :label="$t('request.create.condition60')">{{ $t('request.create.condition60') }}</el-radio-button>
           </el-radio-group>
         </el-form-item>
 
         <!-- 求购描述 -->
-        <el-form-item label="求购描述" prop="description">
+        <el-form-item :label="$t('request.create.description')" prop="description">
           <el-input
             v-model="requestForm.description"
             type="textarea"
             :rows="8"
-            placeholder="请详细描述您的求购需求，如品牌、型号、功能要求等"
+            :placeholder="$t('request.create.descriptionPlaceholder')"
             maxlength="2000"
             show-word-limit
           />
-          <div class="description-tip">* 详细的描述可以提高匹配到合适商品的几率</div>
+          <div class="description-tip">{{ $t('request.create.descriptionTip') }}</div>
         </el-form-item>
 
         <!-- 交易信息 -->
-        <el-form-item label="交易地点" prop="location">
-          <el-input v-model="requestForm.location" placeholder="请输入您方便的交易地点" maxlength="100" show-word-limit />
+        <el-form-item :label="$t('request.create.location')" prop="location">
+          <el-input v-model="requestForm.location" :placeholder="$t('request.create.locationPlaceholder')" maxlength="100" show-word-limit />
         </el-form-item>
 
-        <el-form-item label="交易方式" prop="shippingMethods">
+        <el-form-item :label="$t('request.create.shippingMethod')" prop="shippingMethods">
           <el-checkbox-group v-model="requestForm.shippingMethods">
-            <el-checkbox label="校园面交" name="shipping" />
-            <el-checkbox label="快递邮寄" name="shipping" />
-            <el-checkbox label="其他方式" name="shipping" />
+            <el-checkbox :label="$t('request.create.faceToFace')" name="shipping" />
+            <el-checkbox :label="$t('request.create.express')" name="shipping" />
+            <el-checkbox :label="$t('request.create.otherMethod')" name="shipping" />
           </el-checkbox-group>
         </el-form-item>
 
         <!-- 求购标签 -->
-        <el-form-item label="求购标签">
+        <el-form-item :label="$t('request.create.tags')">
           <el-input
             v-model="tagInput"
-            placeholder="输入标签后按回车添加"
+            :placeholder="$t('request.create.tagsPlaceholder')"
             @keyup.enter="addTag"
             style="width: 300px; margin-right: 10px;"
           />
@@ -84,21 +84,21 @@
           >
             {{ tag }}
           </el-tag>
-          <div class="tag-tip">* 最多添加5个标签，每个标签不超过8个字符</div>
+          <div class="tag-tip">{{ $t('request.create.tagsTip') }}</div>
         </el-form-item>
 
         <!-- 特殊要求（动态添加） -->
-        <el-form-item label="特殊要求">
+        <el-form-item :label="$t('request.create.specialRequirements')">
           <div v-for="(requirement, index) in requestForm.requirements" :key="index" class="requirement-item">
             <el-input
               v-model="requirement.name"
-              placeholder="要求名称"
+              :placeholder="$t('request.create.requirementName')"
               style="width: 150px; margin-right: 10px;"
             />
             <span>:</span>
             <el-input
               v-model="requirement.value"
-              placeholder="要求内容"
+              :placeholder="$t('request.create.requirementValue')"
               style="width: 200px; margin-left: 10px;"
             />
             <el-button
@@ -116,57 +116,57 @@
             :disabled="requestForm.requirements.length >= 10"
             style="margin-top: 10px;"
           >
-            添加要求
+            {{ $t('request.create.addRequirement') }}
           </el-button>
-          <div class="requirement-tip">* 最多添加10个特殊要求</div>
+          <div class="requirement-tip">{{ $t('request.create.requirementsTip') }}</div>
         </el-form-item>
 
         <!-- 期望完成时间 -->
-        <el-form-item label="期望完成时间" prop="expectedCompletionDate">
+        <el-form-item :label="$t('request.create.expectedDate')" prop="expectedCompletionDate">
           <el-date-picker
             v-model="requestForm.expectedCompletionDate"
             type="date"
-            placeholder="选择期望完成时间"
+            :placeholder="$t('request.create.expectedDatePlaceholder')"
             format="YYYY-MM-DD"
             value-format="YYYY-MM-DD"
           />
         </el-form-item>
 
         <!-- 联系方式设置 -->
-        <el-form-item label="联系方式设置">
+        <el-form-item :label="$t('request.create.contactSettings')">
           <div class="contact-settings">
             <el-checkbox-group v-model="contactOptions">
-              <el-checkbox label="phone" name="contact">显示手机号码</el-checkbox>
-              <el-checkbox label="wechat" name="contact">显示微信</el-checkbox>
-              <el-checkbox label="qq" name="contact">显示QQ</el-checkbox>
+              <el-checkbox label="phone" name="contact">{{ $t('request.create.showPhone') }}</el-checkbox>
+              <el-checkbox label="wechat" name="contact">{{ $t('request.create.showWechat') }}</el-checkbox>
+              <el-checkbox label="qq" name="contact">{{ $t('request.create.showQQ') }}</el-checkbox>
             </el-checkbox-group>
-            <div class="contact-hint">* 至少选择一种联系方式，方便卖家联系您</div>
+            <div class="contact-hint">{{ $t('request.create.contactHint') }}</div>
           </div>
         </el-form-item>
 
         <!-- 提交按钮 -->
         <el-form-item>
           <div class="form-actions">
-            <el-button @click="resetForm">重置</el-button>
-            <el-button type="primary" @click="submitForm">发布求购</el-button>
+            <el-button @click="resetForm">{{ $t('common.reset') }}</el-button>
+            <el-button type="primary" @click="submitForm">{{ $t('request.create.submit') }}</el-button>
           </div>
         </el-form-item>
       </el-form>
     </div>
 
     <!-- 发布成功提示 -->
-    <el-dialog v-model="successDialogVisible" title="发布成功" width="400px" :show-close="false">
+    <el-dialog v-model="successDialogVisible" :title="$t('request.create.successTitle')" width="400px" :show-close="false">
       <div class="success-content">
         <div class="success-icon">
           <i class="el-icon-success"></i>
         </div>
-        <p class="success-text">恭喜您，求购信息发布成功！</p>
-        <p class="success-hint">您的求购信息将在审核通过后显示在求购列表中</p>
+        <p class="success-text">{{ $t('request.create.successText') }}</p>
+        <p class="success-hint">{{ $t('request.create.successHint') }}</p>
       </div>
       <template #footer>
         <div class="dialog-actions">
-          <el-button @click="viewRequestItem">查看求购</el-button>
-          <el-button type="primary" @click="publishAnother">发布另一个</el-button>
+          <el-button @click="viewRequestItem">{{ $t('request.create.viewRequest') }}</el-button>
+          <el-button type="primary" @click="publishAnother">{{ $t('request.create.publishAnother') }}</el-button>
         </div>
       </template>
     </el-dialog>
@@ -174,11 +174,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue';
+import { ref, reactive, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
+import { useI18n } from 'vue-i18n';
 import { createRequestItem } from '@/api/requestItem';
 import { useUserStore } from '@/store/user';
+
+const { t } = useI18n();
 
 // 路由和状态管理
 const router = useRouter();
@@ -212,48 +215,48 @@ const successDialogVisible = ref(false);
 const createdRequestItemId = ref('');
 
 // 表单验证规则
-const requestRules = reactive({
+const requestRules = computed(() => ({
   title: [
-    { required: true, message: '请输入求购标题', trigger: 'blur' },
-    { min: 2, max: 50, message: '求购标题长度在 2 到 50 个字符', trigger: 'blur' }
+    { required: true, message: t('request.create.validation.titleRequired'), trigger: 'blur' },
+    { min: 2, max: 50, message: t('request.create.validation.titleLength'), trigger: 'blur' }
   ],
   category: [
-    { required: true, message: '请选择商品分类', trigger: 'change' }
+    { required: true, message: t('request.create.validation.categoryRequired'), trigger: 'change' }
   ],
   maxPrice: [
-    { required: true, message: '请输入最高出价', trigger: 'blur' },
-    { type: 'number', min: 0.01, message: '价格必须大于0', trigger: 'blur' }
+    { required: true, message: t('request.create.validation.priceRequired'), trigger: 'blur' },
+    { type: 'number', min: 0.01, message: t('request.create.validation.priceMin'), trigger: 'blur' }
   ],
   expectedCondition: [
-    { required: true, message: '请选择期望新旧程度', trigger: 'change' }
+    { required: true, message: t('request.create.validation.conditionRequired'), trigger: 'change' }
   ],
   description: [
-    { required: true, message: '请输入求购描述', trigger: 'blur' },
-    { min: 10, max: 2000, message: '求购描述长度在 10 到 2000 个字符', trigger: 'blur' }
+    { required: true, message: t('request.create.validation.descriptionRequired'), trigger: 'blur' },
+    { min: 10, max: 2000, message: t('request.create.validation.descriptionLength'), trigger: 'blur' }
   ],
   location: [
-    { required: true, message: '请输入交易地点', trigger: 'blur' },
-    { min: 2, max: 100, message: '交易地点长度在 2 到 100 个字符', trigger: 'blur' }
+    { required: true, message: t('request.create.validation.locationRequired'), trigger: 'blur' },
+    { min: 2, max: 100, message: t('request.create.validation.locationLength'), trigger: 'blur' }
   ],
   shippingMethods: [
-    { required: true, message: '请至少选择一种交易方式', trigger: 'change' }
+    { required: true, message: t('request.create.validation.shippingRequired'), trigger: 'change' }
   ],
   expectedCompletionDate: [
-    { required: true, message: '请选择期望完成时间', trigger: 'change' }
+    { required: true, message: t('request.create.validation.dateRequired'), trigger: 'change' }
   ]
-});
+}));
 
 // 添加标签
 const addTag = () => {
   if (tagInput.value.trim() && requestForm.tags.length < 5) {
     if (requestForm.tags.includes(tagInput.value.trim())) {
-      ElMessage.warning('该标签已存在');
+      ElMessage.warning(t('request.create.tagExists'));
     } else {
       requestForm.tags.push(tagInput.value.trim());
       tagInput.value = '';
     }
   } else if (requestForm.tags.length >= 5) {
-    ElMessage.warning('最多只能添加5个标签');
+    ElMessage.warning(t('request.create.maxTags'));
   }
 };
 
@@ -270,7 +273,7 @@ const addRequirement = () => {
   if (requestForm.requirements.length < 10) {
     requestForm.requirements.push({ name: '', value: '' });
   } else {
-    ElMessage.warning('最多只能添加10个特殊要求');
+    ElMessage.warning(t('request.create.maxRequirements'));
   }
 };
 
@@ -294,7 +297,7 @@ const submitForm = async () => {
   
   // 检查联系方式
   if (contactOptions.value.length === 0) {
-    ElMessage.error('请至少选择一种联系方式');
+    ElMessage.error(t('request.create.contactRequired'));
     return;
   }
   
@@ -326,7 +329,7 @@ const submitForm = async () => {
     if (error.response?.data?.message) {
       ElMessage.error(error.response.data.message);
     } else {
-      ElMessage.error('发布求购失败，请稍后重试');
+      ElMessage.error(t('request.create.submitFailed'));
     }
   }
 };
@@ -347,7 +350,7 @@ const publishAnother = () => {
 onMounted(() => {
   // 检查用户是否登录
   if (!userStore.isLoggedIn) {
-    ElMessage.warning('请先登录后发布求购信息');
+    ElMessage.warning(t('request.create.loginRequired'));
     router.push('/login');
     return;
   }

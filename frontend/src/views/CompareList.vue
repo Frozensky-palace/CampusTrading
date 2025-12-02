@@ -3,11 +3,11 @@
     <!-- 页面标题 -->
     <div class="page-header">
       <div class="header-content">
-        <h1>比价任务</h1>
-        <p>发布您的比价需求，获取最优惠的价格信息</p>
+        <h1>{{ $t('compare.list.title') }}</h1>
+        <p>{{ $t('compare.list.subtitle') }}</p>
       </div>
       <div class="action-buttons">
-        <el-button type="primary" icon="el-icon-plus" @click="createCompareTask">发布比价</el-button>
+        <el-button type="primary" icon="el-icon-plus" @click="createCompareTask">{{ $t('compare.list.publishCompare') }}</el-button>
       </div>
     </div>
 
@@ -16,47 +16,47 @@
       <div class="filter-container">
         <!-- 分类筛选 -->
         <div class="filter-item">
-          <el-select v-model="filters.category" placeholder="商品分类" clearable>
-            <el-option label="全部" value=""></el-option>
-            <el-option label="数码电子" value="digital"></el-option>
-            <el-option label="学习资料" value="textbook"></el-option>
-            <el-option label="生活家居" value="home"></el-option>
-            <el-option label="体育用品" value="sports"></el-option>
-            <el-option label="服饰鞋包" value="clothing"></el-option>
-            <el-option label="其他类别" value="others"></el-option>
+          <el-select v-model="filters.category" :placeholder="$t('compare.list.categoryPlaceholder')" clearable>
+            <el-option :label="$t('compare.list.allCategories')" value=""></el-option>
+            <el-option :label="$t('item.categories.digital')" value="digital"></el-option>
+            <el-option :label="$t('item.categories.textbook')" value="textbook"></el-option>
+            <el-option :label="$t('item.categories.home')" value="home"></el-option>
+            <el-option :label="$t('item.categories.sports')" value="sports"></el-option>
+            <el-option :label="$t('item.categories.clothing')" value="clothing"></el-option>
+            <el-option :label="$t('item.categories.others')" value="others"></el-option>
           </el-select>
         </div>
 
         <!-- 价格区间 -->
         <div class="filter-item">
-          <el-select v-model="filters.priceRange" placeholder="期望价格" clearable>
-            <el-option label="不限" value=""></el-option>
-            <el-option label="0-50元" value="0-50"></el-option>
-            <el-option label="50-200元" value="50-200"></el-option>
-            <el-option label="200-500元" value="200-500"></el-option>
-            <el-option label="500-1000元" value="500-1000"></el-option>
-            <el-option label="1000元以上" value="1000+"></el-option>
+          <el-select v-model="filters.priceRange" :placeholder="$t('compare.list.priceRangePlaceholder')" clearable>
+            <el-option :label="$t('compare.list.noLimit')" value=""></el-option>
+            <el-option :label="$t('compare.list.price0_50')" value="0-50"></el-option>
+            <el-option :label="$t('compare.list.price50_200')" value="50-200"></el-option>
+            <el-option :label="$t('compare.list.price200_500')" value="200-500"></el-option>
+            <el-option :label="$t('compare.list.price500_1000')" value="500-1000"></el-option>
+            <el-option :label="$t('compare.list.priceAbove1000')" value="1000+"></el-option>
           </el-select>
         </div>
 
         <!-- 发布时间 -->
         <div class="filter-item">
-          <el-select v-model="filters.timeRange" placeholder="发布时间" clearable>
-            <el-option label="全部" value=""></el-option>
-            <el-option label="今天" value="today"></el-option>
-            <el-option label="3天内" value="3days"></el-option>
-            <el-option label="一周内" value="week"></el-option>
-            <el-option label="一月内" value="month"></el-option>
+          <el-select v-model="filters.timeRange" :placeholder="$t('compare.list.timeRangePlaceholder')" clearable>
+            <el-option :label="$t('compare.list.allTime')" value=""></el-option>
+            <el-option :label="$t('compare.list.today')" value="today"></el-option>
+            <el-option :label="$t('compare.list.threeDays')" value="3days"></el-option>
+            <el-option :label="$t('compare.list.oneWeek')" value="week"></el-option>
+            <el-option :label="$t('compare.list.oneMonth')" value="month"></el-option>
           </el-select>
         </div>
 
         <!-- 状态筛选 -->
         <div class="filter-item">
-          <el-select v-model="filters.status" placeholder="比价状态" clearable>
-            <el-option label="全部" value=""></el-option>
-            <el-option label="进行中" value="active"></el-option>
-            <el-option label="已完成" value="completed"></el-option>
-            <el-option label="已取消" value="cancelled"></el-option>
+          <el-select v-model="filters.status" :placeholder="$t('compare.list.statusPlaceholder')" clearable>
+            <el-option :label="$t('compare.list.allStatus')" value=""></el-option>
+            <el-option :label="$t('compare.list.statusActive')" value="active"></el-option>
+            <el-option :label="$t('compare.list.statusCompleted')" value="completed"></el-option>
+            <el-option :label="$t('compare.list.statusCancelled')" value="cancelled"></el-option>
           </el-select>
         </div>
 
@@ -64,12 +64,12 @@
         <div class="search-container">
           <el-input
             v-model="filters.keyword"
-            placeholder="搜索比价任务..."
+            :placeholder="$t('compare.list.searchPlaceholder')"
             prefix-icon="el-icon-search"
             @keyup.enter="search"
           >
             <template #append>
-              <el-button type="primary" @click="search">搜索</el-button>
+              <el-button type="primary" @click="search">{{ $t('compare.list.search') }}</el-button>
             </template>
           </el-input>
         </div>
@@ -77,7 +77,7 @@
 
       <!-- 标签筛选 -->
       <div class="tags-filter">
-        <span class="tags-title">热门标签：</span>
+        <span class="tags-title">{{ $t('compare.list.hotTags') }}</span>
         <el-tag
           v-for="tag in popularTags"
           :key="tag"
@@ -91,12 +91,12 @@
 
       <!-- 排序选项 -->
       <div class="sort-options">
-        <span class="sort-title">排序：</span>
+        <span class="sort-title">{{ $t('compare.list.sortTitle') }}</span>
         <el-radio-group v-model="sortOption" size="small">
-          <el-radio-button label="newest">最新发布</el-radio-button>
-          <el-radio-button label="priceAsc">价格从低到高</el-radio-button>
-          <el-radio-button label="priceDesc">价格从高到低</el-radio-button>
-          <el-radio-button label="hot">热度优先</el-radio-button>
+          <el-radio-button label="newest">{{ $t('compare.list.sortNewest') }}</el-radio-button>
+          <el-radio-button label="priceAsc">{{ $t('compare.list.sortPriceAsc') }}</el-radio-button>
+          <el-radio-button label="priceDesc">{{ $t('compare.list.sortPriceDesc') }}</el-radio-button>
+          <el-radio-button label="hot">{{ $t('compare.list.sortHot') }}</el-radio-button>
         </el-radio-group>
         <el-button
           type="text"
@@ -104,7 +104,7 @@
           @click="resetFilters"
           class="reset-button"
         >
-          重置筛选
+          {{ $t('compare.list.resetFilters') }}
         </el-button>
       </div>
     </div>
@@ -113,7 +113,7 @@
     <div class="compare-list">
       <!-- 列表头部信息 -->
       <div class="list-header">
-        <span class="result-count">共找到 <strong>{{ compareTasks.length }}</strong> 条比价任务</span>
+        <span class="result-count">{{ $t('compare.list.resultCount') }} <strong>{{ compareTasks.length }}</strong> {{ $t('compare.list.resultCountUnit') }}</span>
         <div class="view-mode">
           <el-button-group size="small">
             <el-button
@@ -145,7 +145,7 @@
               <div class="task-main">
                 <div class="task-title">
                   <h3>{{ task.title }}</h3>
-                  <span class="price-tag">预算：￥{{ formatPrice(task.budget) }}</span>
+                  <span class="price-tag">{{ $t('compare.list.budget') }}￥{{ formatPrice(task.budget) }}</span>
                 </div>
                 <div class="task-info">
                   <div class="info-left">
@@ -156,7 +156,7 @@
                   <div class="info-right">
                     <span class="status-badge" :class="getStatusClass(task.status)">{{ getStatusText(task.status) }}</span>
                     <span class="quote-count">
-                      <i class="el-icon-chat-dot-round"></i> {{ task.quoteCount || 0 }}个报价
+                      <i class="el-icon-chat-dot-round"></i> {{ $t('compare.list.quoteCount', { count: task.quoteCount || 0 }) }}
                     </span>
                   </div>
                 </div>
@@ -206,7 +206,7 @@
               </div>
               <div class="grid-footer">
                 <span class="status-badge" :class="getStatusClass(task.status)">{{ getStatusText(task.status) }}</span>
-                <span class="quote-count">{{ task.quoteCount || 0 }}个报价</span>
+                <span class="quote-count">{{ $t('compare.list.quoteCount', { count: task.quoteCount || 0 }) }}</span>
               </div>
             </div>
           </el-card>
@@ -218,9 +218,9 @@
         <div class="empty-icon">
           <i class="el-icon-search"></i>
         </div>
-        <p class="empty-text">暂无符合条件的比价任务</p>
-        <p class="empty-hint">换个筛选条件试试吧</p>
-        <el-button type="primary" @click="resetFilters">重置筛选</el-button>
+        <p class="empty-text">{{ $t('compare.list.noResults') }}</p>
+        <p class="empty-hint">{{ $t('compare.list.noResultsHint') }}</p>
+        <el-button type="primary" @click="resetFilters">{{ $t('compare.list.resetFilters') }}</el-button>
       </div>
     </div>
 
@@ -240,11 +240,38 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue';
+import { ref, reactive, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
+import { useI18n } from 'vue-i18n';
 import { getCompareTaskList } from '@/api/compare';
-import { formatPrice, formatTime, truncateText, getCategoryName, getStatusText, getStatusClass } from '@/utils/common';
+import { formatPrice, formatTime, truncateText, getStatusClass } from '@/utils/common';
+
+// i18n
+const { t } = useI18n();
+
+// 获取分类名称
+const getCategoryName = (category: string) => {
+  const categoryMap: Record<string, string> = {
+    digital: t('item.categories.digital'),
+    textbook: t('item.categories.textbook'),
+    home: t('item.categories.home'),
+    sports: t('item.categories.sports'),
+    clothing: t('item.categories.clothing'),
+    others: t('item.categories.others')
+  };
+  return categoryMap[category] || category;
+};
+
+// 获取状态文本
+const getStatusText = (status: string) => {
+  const statusMap: Record<string, string> = {
+    active: t('compare.list.statusActive'),
+    completed: t('compare.list.statusCompleted'),
+    cancelled: t('compare.list.statusCancelled')
+  };
+  return statusMap[status] || status;
+};
 
 // 路由
 const router = useRouter();
@@ -268,7 +295,18 @@ const viewMode = ref('list');
 const activeTag = ref('');
 
 // 热门标签
-const popularTags = ref(['笔记本电脑', '手机', '耳机', '考研资料', '教材', '显示器', '键盘', '相机', '运动鞋', '平板']);
+const popularTags = computed(() => [
+  t('item.list.popularTags.laptop'),
+  t('item.list.popularTags.phone'),
+  t('item.list.popularTags.headphones'),
+  t('item.list.popularTags.examMaterials'),
+  t('item.list.popularTags.textbook'),
+  t('item.list.popularTags.monitor'),
+  t('item.list.popularTags.keyboard'),
+  t('item.list.popularTags.camera'),
+  t('item.list.popularTags.sneakers'),
+  t('item.list.popularTags.tablet')
+]);
 
 // 分页信息
 const pagination = reactive({
@@ -359,11 +397,11 @@ const loadCompareTasks = async () => {
 
     // 如果没有数据，显示提示
     if (compareTasks.value.length === 0) {
-      ElMessage.info('没有找到符合条件的比价任务');
+      ElMessage.info(t('compare.list.noMatchingInfo'));
     }
   } catch (error) {
     console.error('Failed to load compare tasks:', error);
-    ElMessage.error('加载比价任务失败，请稍后重试');
+    ElMessage.error(t('compare.list.loadFailed'));
   } finally {
     loading.value = false;
   }

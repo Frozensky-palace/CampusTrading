@@ -28,15 +28,15 @@
       <div class="compare-conditions" v-if="hasConditions">
         <div class="condition-item" v-if="task.budget">
           <i class="el-icon-money"></i>
-          <span>预算价格：¥{{ task.budget }}</span>
+          <span>{{ $t('compare.card.budget') }}{{ task.budget }}</span>
         </div>
         <div class="condition-item" v-if="task.expectedCondition">
           <i class="el-icon-goods"></i>
-          <span>期望成色：{{ getConditionText(task.expectedCondition) }}</span>
+          <span>{{ $t('compare.card.expectedCondition') }}{{ getConditionText(task.expectedCondition) }}</span>
         </div>
         <div class="condition-item" v-if="task.expectedTime">
           <i class="el-icon-time"></i>
-          <span>期望完成：{{ task.expectedTime }}</span>
+          <span>{{ $t('compare.card.expectedTime') }}{{ task.expectedTime }}</span>
         </div>
       </div>
       
@@ -53,16 +53,16 @@
       <!-- 发布者信息 -->
       <div class="compare-publisher">
         <img :src="task.publisher?.avatar || defaultAvatar" :alt="task.publisher?.nickname" class="publisher-avatar" />
-        <span class="publisher-name">{{ task.publisher?.nickname || '匿名用户' }}</span>
+        <span class="publisher-name">{{ task.publisher?.nickname || $t('compare.card.anonymousUser') }}</span>
       </div>
-      
+
       <!-- 统计信息 -->
       <div class="compare-stats">
         <span class="stat-item">
           <i class="el-icon-eye"></i> {{ task.views || 0 }}
         </span>
         <span class="stat-item">
-          <i class="el-icon-comment"></i> {{ task.quotes || 0 }} 报价
+          <i class="el-icon-comment"></i> {{ task.quotes || 0 }} {{ $t('compare.card.quotes') }}
         </span>
         <span class="stat-item">
           <i class="el-icon-time"></i> {{ formatTime(task.createdAt) }}
@@ -74,6 +74,10 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+// i18n
+const { t } = useI18n();
 
 // 比价任务类型定义
 interface CompareTask {
@@ -116,10 +120,10 @@ const hasConditions = computed(() => {
 // 获取状态文本
 const getStatusText = (status: string): string => {
   const statusMap: Record<string, string> = {
-    'pending': '待处理',
-    'processing': '处理中',
-    'completed': '已完成',
-    'closed': '已关闭'
+    'pending': t('compare.card.statusPending'),
+    'processing': t('compare.card.statusProcessing'),
+    'completed': t('compare.card.statusCompleted'),
+    'closed': t('compare.card.statusClosed')
   };
   return statusMap[status] || status;
 };
@@ -127,11 +131,11 @@ const getStatusText = (status: string): string => {
 // 获取成色文本
 const getConditionText = (condition: string): string => {
   const conditionMap: Record<string, string> = {
-    'new': '全新',
-    'like_new': '九成新',
-    'excellent': '八成新',
-    'good': '七成新',
-    'used': '使用过'
+    'new': t('compare.card.conditionNew'),
+    'like_new': t('compare.card.conditionLikeNew'),
+    'excellent': t('compare.card.conditionExcellent'),
+    'good': t('compare.card.conditionGood'),
+    'used': t('compare.card.conditionUsed')
   };
   return conditionMap[condition] || condition;
 };
@@ -144,13 +148,13 @@ const formatTime = (timeString: string): string => {
   const minutes = Math.floor(diff / 1000 / 60);
   const hours = Math.floor(minutes / 60);
   const days = Math.floor(hours / 24);
-  
+
   if (minutes < 60) {
-    return `${minutes}分钟前`;
+    return t('compare.card.minutesAgo', { minutes });
   } else if (hours < 24) {
-    return `${hours}小时前`;
+    return t('compare.card.hoursAgo', { hours });
   } else if (days < 30) {
-    return `${days}天前`;
+    return t('compare.card.daysAgo', { days });
   } else {
     return time.toLocaleDateString();
   }
