@@ -165,6 +165,11 @@ const route = useRoute();
 const router = useRouter();
 const itemId = ref(Number(route.params.id));
 
+// 获取静态资源路径的帮助函数
+const getAssetUrl = (path: string) => {
+  return new URL(`../assets/images/${path}`, import.meta.url).href;
+};
+
 // 租赁物品数据
 interface RentItemDetail {
   id: number;
@@ -193,11 +198,11 @@ interface RentItemDetail {
 const mockRentItemDetail: RentItemDetail = {
   id: itemId.value || 1,
   name: '专业相机Canon EOS R5',
-  image: '/assets/images/camera.jpg',
+  image: getAssetUrl('camera.webp'),
   images: [
-    '/assets/images/camera.jpg',
-    '/assets/images/camera2.jpg',
-    '/assets/images/camera3.jpg'
+    getAssetUrl('camera.webp'),
+    getAssetUrl('camera.webp'),
+    getAssetUrl('camera.webp')
   ],
   rental_price_day: 150,
   rental_price_week: 900,
@@ -222,7 +227,7 @@ const mockRentItemDetail: RentItemDetail = {
   createTime: '2023-05-15T08:30:00',
   ownerId: 101,
   ownerName: '摄影爱好者小张',
-  ownerAvatar: '/assets/images/avatar1.jpg',
+  ownerAvatar: getAssetUrl('camera.webp'),
   ownerRating: 4.8,
   rentalCount: 12,
   reviewRate: 96,
@@ -234,8 +239,8 @@ const mockRelatedItems = [
   {
     id: 2,
     name: '专业绘图板Wacom',
-    image: '/assets/images/tablet.jpg',
-    images: ['/assets/images/tablet.jpg'],
+    image: getAssetUrl('tablet.webp'),
+    images: [getAssetUrl('tablet.webp')],
     rental_price_day: 50,
     rental_price_week: 300,
     rental_price_month: 1000,
@@ -247,7 +252,7 @@ const mockRelatedItems = [
     createTime: '2023-05-20T10:00:00',
     ownerId: 102,
     ownerName: '创意设计小李',
-    ownerAvatar: '/assets/images/avatar2.jpg',
+    ownerAvatar: getAssetUrl('tablet.webp'),
     ownerRating: 4.7,
     rentalCount: 8,
     reviewRate: 94
@@ -255,8 +260,8 @@ const mockRelatedItems = [
   {
     id: 3,
     name: '无人机DJI Mini 3',
-    image: '/assets/images/drone.jpg',
-    images: ['/assets/images/drone.jpg'],
+    image: getAssetUrl('camera.webp'),
+    images: [getAssetUrl('camera.webp')],
     rental_price_day: 200,
     rental_price_week: 1200,
     rental_price_month: 4000,
@@ -268,7 +273,7 @@ const mockRelatedItems = [
     createTime: '2023-06-05T14:30:00',
     ownerId: 103,
     ownerName: '航拍爱好者小王',
-    ownerAvatar: '/assets/images/avatar3.jpg',
+    ownerAvatar: getAssetUrl('camera.webp'),
     ownerRating: 4.9,
     rentalCount: 5,
     reviewRate: 98
@@ -276,8 +281,8 @@ const mockRelatedItems = [
   {
     id: 4,
     name: '拍立得相机富士Instax',
-    image: '/assets/images/instax.jpg',
-    images: ['/assets/images/instax.jpg'],
+    image: getAssetUrl('camera.webp'),
+    images: [getAssetUrl('camera.webp')],
     rental_price_day: 30,
     rental_price_week: 180,
     rental_price_month: 600,
@@ -289,7 +294,7 @@ const mockRelatedItems = [
     createTime: '2023-07-10T09:15:00',
     ownerId: 104,
     ownerName: '摄影爱好者小赵',
-    ownerAvatar: '/assets/images/avatar4.jpg',
+    ownerAvatar: getAssetUrl('camera.webp'),
     ownerRating: 4.6,
     rentalCount: 15,
     reviewRate: 92
@@ -297,8 +302,8 @@ const mockRelatedItems = [
   {
     id: 5,
     name: '三脚架曼富图',
-    image: '/assets/images/tripod.jpg',
-    images: ['/assets/images/tripod.jpg'],
+    image: getAssetUrl('camera.webp'),
+    images: [getAssetUrl('camera.webp')],
     rental_price_day: 40,
     rental_price_week: 240,
     rental_price_month: 800,
@@ -310,7 +315,7 @@ const mockRelatedItems = [
     createTime: '2023-08-15T16:45:00',
     ownerId: 105,
     ownerName: '摄影爱好者小张',
-    ownerAvatar: '/assets/images/avatar1.jpg',
+    ownerAvatar: getAssetUrl('camera.webp'),
     ownerRating: 4.8,
     rentalCount: 10,
     reviewRate: 95

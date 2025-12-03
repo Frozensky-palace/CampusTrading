@@ -332,7 +332,7 @@ const mockHotItems = computed(() => [
   {
     id: 1,
     name: t('mockItems.item1.name'),
-    image: getAssetUrl('macbook.jpg'),
+    image: getAssetUrl('macbook.webp'),
     price: 8999,
     originalPrice: 11999,
     discount: 7.5,
@@ -342,7 +342,7 @@ const mockHotItems = computed(() => [
   {
     id: 2,
     name: t('mockItems.item2.name'),
-    image: getAssetUrl('ipad.jpg'),
+    image: getAssetUrl('ipadpro.webp'),
     price: 4500,
     originalPrice: 6299,
     location: t('mockItems.item2.location'),
@@ -351,7 +351,7 @@ const mockHotItems = computed(() => [
   {
     id: 3,
     name: t('mockItems.item3.name'),
-    image: getAssetUrl('englishbook.jpg'),
+    image: getAssetUrl('englishbook.webp'),
     price: 25,
     originalPrice: 58,
     discount: 4.3,
@@ -361,7 +361,7 @@ const mockHotItems = computed(() => [
   {
     id: 4,
     name: t('mockItems.item4.name'),
-    image: getAssetUrl('mathbook.jpg'),
+    image: getAssetUrl('mathbook.webp'),
     price: 35,
     originalPrice: 78,
     location: t('mockItems.item4.location'),
@@ -370,7 +370,7 @@ const mockHotItems = computed(() => [
   {
     id: 5,
     name: t('mockItems.item5.name'),
-    image: getAssetUrl('basketball.jpg'),
+    image: getAssetUrl('basketball.webp'),
     price: 80,
     originalPrice: 168,
     location: t('mockItems.item5.location'),
@@ -379,7 +379,7 @@ const mockHotItems = computed(() => [
   {
     id: 6,
     name: t('mockItems.item6.name'),
-    image: getAssetUrl('guitar.jpg'),
+    image: getAssetUrl('guitar.webp'),
     price: 199,
     originalPrice: 399,
     location: t('mockItems.item6.location'),
@@ -388,7 +388,7 @@ const mockHotItems = computed(() => [
   {
     id: 7,
     name: t('mockItems.item7.name'),
-    image: getAssetUrl('tablet.jpg'),
+    image: getAssetUrl('tablet.webp'),
     price: 450,
     originalPrice: 899,
     location: t('mockItems.item7.location'),
@@ -397,7 +397,7 @@ const mockHotItems = computed(() => [
   {
     id: 8,
     name: t('mockItems.item8.name'),
-    image: getAssetUrl('bike.jpg'),
+    image: getAssetUrl('bike.webp'),
     price: 150,
     originalPrice: 350,
     location: t('mockItems.item8.location'),

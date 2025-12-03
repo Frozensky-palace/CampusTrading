@@ -89,6 +89,11 @@ import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
+// 获取静态资源路径的帮助函数
+const getAssetUrl = (path: string) => {
+  return new URL(`../assets/images/${path}`, import.meta.url).href;
+};
+
 // 搜索和筛选条件
 const searchKeyword = ref('');
 const categoryFilter = ref('');
@@ -118,7 +123,7 @@ const mockRentItems = computed(() => [
   {
     id: 1,
     name: t('rent.mockData.camera'),
-    image: '/assets/images/camera.jpg',
+    image: getAssetUrl('camera.webp'),
     price: 150,
     deposit: 3000,
     location: t('rent.mockData.locations.mainCampus'),
@@ -128,7 +133,7 @@ const mockRentItems = computed(() => [
   {
     id: 2,
     name: t('rent.mockData.tablet'),
-    image: '/assets/images/tablet.jpg',
+    image: getAssetUrl('tablet.webp'),
     price: 50,
     deposit: 800,
     location: t('rent.mockData.locations.designSchool'),
@@ -138,7 +143,7 @@ const mockRentItems = computed(() => [
   {
     id: 3,
     name: t('rent.mockData.basketball'),
-    image: '/assets/images/basketball.jpg',
+    image: getAssetUrl('basketball.webp'),
     price: 20,
     deposit: 200,
     location: t('rent.mockData.locations.gym'),
@@ -148,7 +153,7 @@ const mockRentItems = computed(() => [
   {
     id: 4,
     name: t('rent.mockData.guitar'),
-    image: '/assets/images/guitar.jpg',
+    image: getAssetUrl('guitar.webp'),
     price: 80,
     deposit: 1000,
     location: t('rent.mockData.locations.musicBuilding'),
@@ -158,7 +163,7 @@ const mockRentItems = computed(() => [
   {
     id: 5,
     name: t('rent.mockData.examBooks'),
-    image: '/assets/images/book1.jpg',
+    image: getAssetUrl('englishbook.webp'),
     price: 10,
     deposit: 200,
     location: t('rent.mockData.locations.library'),
@@ -168,7 +173,7 @@ const mockRentItems = computed(() => [
   {
     id: 6,
     name: t('rent.mockData.bicycle'),
-    image: '/assets/images/bike1.jpg',
+    image: getAssetUrl('bike.webp'),
     price: 30,
     deposit: 500,
     location: t('rent.mockData.locations.bikeShed'),
